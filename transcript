@@ -1,0 +1,30 @@
+# //  Questa Sim-64
+# //  Version 10.3d linux_x86_64 Oct  6 2014
+# //
+# //  Copyright 1991-2014 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+vsim work.fft_stage
+# vsim 
+# Start time: 16:17:25 on Apr 24,2018
+# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
+# Loading work.fft_stage
+# Loading work.read_input
+# Loading work.ram
+# Loading work.pe
+# Loading work.qadd
+# Loading work.qmult
+# Loading work.mux_controls
+# ** Error: (vsim-3053) rtl32/fft_stage.v(112): Illegal output or inout port connection for port 'error'.
+#         Region: :fft_stage:r0
+# ** Error: (vsim-3053) rtl32/fft_stage.v(112): Illegal output or inout port connection for port 'done'.
+#         Region: :fft_stage:r0
+# ** Warning: (vsim-3017) rtl32/fft_stage.v(136): [TFMPC] - Too few port connections. Expected 13, found 11.
+#         Region: :fft_stage:mux_ctrl
+# ** Warning: (vsim-3722) rtl32/fft_stage.v(136): [TFMPC] - Missing connection for port 'm31_s'.
+# ** Warning: (vsim-3722) rtl32/fft_stage.v(136): [TFMPC] - Missing connection for port 'm32_s'.
+# Error loading design

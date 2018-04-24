@@ -1,0 +1,170 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/homes/user/spring18/zq2154/ELEN4823/ELEN4823_project
+vfft_stage
+!s110 1524600938
+!i10b 1
+!s100 =7i6:Aj=9EIm<>c@DiKC^3
+Ii5=AP5<:`YaHQf<^P6gnd0
+Z1 V`JN@9S9cnhjKRR_L]QIcM3
+R0
+w1524600422
+8rtl32/fft_stage.v
+Frtl32/fft_stage.v
+L0 8
+Z2 OL;L;10.3d;59
+r1
+!s85 0
+31
+!s108 1524600938.765102
+!s107 rtl32/fft_stage.v|
+!s90 rtl32/fft_stage.v|
+!i113 1
+Z3 o-L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+vmux_controls
+!s110 1524600943
+!i10b 1
+!s100 MfVAVJDk7a]E;zMCcz6GS1
+IU2JjY[>Ke45jKX7aXHnD23
+R1
+R0
+w1524599524
+8rtl32/mux_controls.v
+Frtl32/mux_controls.v
+L0 1
+R2
+r1
+!s85 0
+31
+!s108 1524600943.765839
+!s107 rtl32/mux_controls.v|
+!s90 rtl32/mux_controls.v|
+!i113 1
+R3
+vpe
+!s110 1524600959
+!i10b 1
+!s100 BBHD3PzPKk_fb61`:hzGN2
+IE7V=WA1=g2RLoOUglfK0n0
+R1
+R0
+w1524457514
+8rtl32/pe.v
+Frtl32/pe.v
+L0 1
+R2
+r1
+!s85 0
+31
+!s108 1524600959.486008
+!s107 rtl32/pe.v|
+!s90 rtl32/pe.v|
+!i113 1
+R3
+vqadd
+!s110 1524601031
+!i10b 1
+!s100 ZRkdI9j8U3A^8HSmM1<7j2
+IjzLWkH3]O;S]3U`dl8]Co2
+R1
+R0
+w1524601013
+8rtl32/qadd.v
+Frtl32/qadd.v
+Z4 L0 21
+R2
+r1
+!s85 0
+31
+!s108 1524601031.232541
+!s107 rtl32/qadd.v|
+!s90 rtl32/qadd.v|
+!i113 1
+R3
+vqmult
+!s110 1524601035
+!i10b 1
+!s100 5HdM9GlSz]QQUk5:STOh41
+IBZZ=`;WE[:ggbQhj?97Cg1
+R1
+R0
+w1524601017
+8rtl32/qmult.v
+Frtl32/qmult.v
+R4
+R2
+r1
+!s85 0
+31
+!s108 1524601035.747034
+!s107 rtl32/qmult.v|
+!s90 rtl32/qmult.v|
+!i113 1
+R3
+vqmults
+!s110 1524601037
+!i10b 1
+!s100 JLDSP32mdKzJ^MQ=?:l`O2
+IcS4XJH6:5S8>KC>AojG0I2
+R1
+R0
+w1524601020
+8rtl32/qmults.v
+Frtl32/qmults.v
+R4
+R2
+r1
+!s85 0
+31
+!s108 1524601037.054762
+!s107 rtl32/qmults.v|
+!s90 rtl32/qmults.v|
+!i113 1
+R3
+vram
+!s110 1524600950
+!i10b 1
+!s100 Y]jiNTAXn?mZWS1MEPZ6N2
+IAbMgXDCmkc=18m:e8bXDi1
+R1
+R0
+w1524599504
+8rtl32/ram.v
+Frtl32/ram.v
+L0 1
+R2
+r1
+!s85 0
+31
+!s108 1524600950.475011
+!s107 rtl32/ram.v|
+!s90 rtl32/ram.v|
+!i113 1
+R3
+vread_input
+!s110 1524600954
+!i10b 1
+!s100 ^ne;[KD`m@oD;=Sio0Wjn3
+I_XlbKH>i4c6m`W<UJ@bJF0
+R1
+R0
+w1524598606
+8rtl32/read_input.v
+Frtl32/read_input.v
+L0 12
+R2
+r1
+!s85 0
+31
+!s108 1524600954.163851
+!s107 rtl32/read_input.v|
+!s90 rtl32/read_input.v|
+!i113 1
+R3

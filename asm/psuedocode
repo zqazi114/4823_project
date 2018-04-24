@@ -1,0 +1,102 @@
+// N = Number of samples
+// IN = input data samples
+// OUT = output data samples
+
+float[N] OUT process_stage(int stageNum, float[N] IN)
+
+	for counter = 0; counter < N/4; counter++ 
+
+		bank0AddrR = counter
+		bank0AddrW = counter
+		
+		bank1AddrR = bank0AddrR
+		bank1AddrW = bank0AddrW
+		bank3AddrR = bank2AddrR
+		bank3AddrW = bank2AddrW
+	
+		switch(stageNum)
+			case 1:
+				// R/W addresses
+				bank2AddrW = counter
+				bank2AddrR = {~counter[n-3],counter[n-4:0]}
+
+				// Mux control
+				m21,m22,m23,m24 = 0000
+				m11,m12,m13,m14 = 0213
+				m31,m32 		= 00
+
+			case 2:
+				// R/W addresses
+				bank2AddrW = counter
+				bank2AddrR = {~counter[n-3],counter[n-4:0]}
+
+				// Mux control
+				m31,m32 = 00				
+				// Writeback mux
+				if counter[n-3:n-3-(stageNum-2)] % 2 == 1		// odd
+					m21,m22,m23,m24 = 2301
+				else 
+					m21,m22,m23,m24 = 0123						// even
+				// Read mux
+				if counter[n-3:n-3-(stageNum-2)] == 0 			// zero
+					m11,m12,m13,m14 = 0123
+				else if counter[n-3:n-3-(stageNum-2)] % 2 == 1 	// odd
+					m11,m12,m13,m14 = 2031						
+				else 											// even
+					m11,m12,m13,m14 = 0213
+
+			case 3,...,n-2:
+				// R/W addresses
+				bank2AddrW = {~counter[n-3:n-4],counter[n-5:0]}
+				bank2AddrR = counter
+
+				// Mux control
+				m31,m32 = 00				
+				// Writeback mux
+				if counter[n-3:n-3-(stageNum-2)] % 2 == 1		// odd
+					m21,m22,m23,m24 = 2301
+				else 
+					m21,m22,m23,m24 = 0123						// even
+				// Read mux
+				if counter[n-3:n-3-(stageNum-2)] == 0 			// zero
+					m11,m12,m13,m14 = 0123
+				else if counter[n-3:n-3-(stageNum-2)] % 2 == 1 	// odd
+					m11,m12,m13,m14 = 2031						
+				else 											// even
+					m11,m12,m13,m14 = 0213
+
+			case n-1:
+				// R/W addresses
+				bank2AddrW = ~counter
+				bank2AddrR = 0
+
+				// Mux control
+				m31,m32 = 00				
+				// Writeback mux
+				if counter[n-3:n-3-(stageNum-2)] % 2 == 1		// odd
+					m21,m22,m23,m24 = 2301
+				else 
+					m21,m22,m23,m24 = 0123						// even
+				// Read mux
+				if counter[n-3:n-3-(stageNum-2)] == 0 			// zero
+					m11,m12,m13,m14 = 0123
+				else if counter[n-3:n-3-(stageNum-2)] % 2 == 1 	// odd
+					m11,m12,m13,m14 = 2031						
+				else 											// even
+					m11,m12,m13,m14 = 0213
+
+			case n:
+				// R/W addresses
+				bank2AddrW = ~counter
+				bank2AddrR = 0
+
+				// Mux control
+				m21,m22,m23,m24 = 0123
+				m11,m12,m13,m14 = 0123
+				m31,m32 		= 11
+
+		// Perform processing and write back		
+		bank0[bank0AddrW], bank1[bank1AddrW], bank2[bank2AddrW], bank3[bank3AddrW] = 
+			PE( bank0[bank0AddrR], bank1[bank1AddrR], bank2[bank2AddrR], bank3[bank3AddrR], twiddle )
+	
+}	
