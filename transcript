@@ -8,23 +8,64 @@
 # //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
 # //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
 # //
-vsim work.fft_stage
+vsim work.fft_stage_control
 # vsim 
-# Start time: 16:17:25 on Apr 24,2018
+# Start time: 21:33:34 on Apr 24,2018
 # ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft_stage
-# Loading work.read_input
-# Loading work.ram
-# Loading work.pe
-# Loading work.qadd
-# Loading work.qmult
+# Loading work.fft_stage_control
 # Loading work.mux_controls
-# ** Error: (vsim-3053) rtl32/fft_stage.v(112): Illegal output or inout port connection for port 'error'.
-#         Region: :fft_stage:r0
-# ** Error: (vsim-3053) rtl32/fft_stage.v(112): Illegal output or inout port connection for port 'done'.
-#         Region: :fft_stage:r0
-# ** Warning: (vsim-3017) rtl32/fft_stage.v(136): [TFMPC] - Too few port connections. Expected 13, found 11.
-#         Region: :fft_stage:mux_ctrl
-# ** Warning: (vsim-3722) rtl32/fft_stage.v(136): [TFMPC] - Missing connection for port 'm31_s'.
-# ** Warning: (vsim-3722) rtl32/fft_stage.v(136): [TFMPC] - Missing connection for port 'm32_s'.
+# ** Warning: (vsim-3017) rtl32/fft_stage_control.v(48): [TFMPC] - Too few port connections. Expected 7, found 6.
+#         Region: :fft_stage_control:mux_ctrl
+# ** Warning: (vsim-3015) rtl32/fft_stage_control.v(48): [PCDPC] - Port size (6) does not match connection size (3) for port 'counter'. The port definition is at: rtl32/mux_control.v(2).
+#         Region: :fft_stage_control:mux_ctrl
+# ** Error: (vsim-3053) rtl32/fft_stage_control.v(48): Illegal output or inout port connection for port 'm3_s'.
+#         Region: :fft_stage_control:mux_ctrl
 # Error loading design
+vsim work.fft_stage_control
+# vsim 
+# Start time: 21:34:59 on Apr 24,2018
+# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
+# Loading work.fft_stage_control
+# Loading work.mux_controls
+# ** Warning: (vsim-3017) rtl32/fft_stage_control.v(43): [TFMPC] - Too few port connections. Expected 7, found 6.
+#         Region: :fft_stage_control:mux_ctrl
+# ** Warning: (vsim-3015) rtl32/fft_stage_control.v(43): [PCDPC] - Port size (6) does not match connection size (3) for port 'counter'. The port definition is at: rtl32/mux_control.v(2).
+#         Region: :fft_stage_control:mux_ctrl
+add wave *
+force -freeze sim/:fft_stage_control:clk 1 0, 0 {50 ps} -r 100ps
+force -deposit sim/:fft_stage_control:en 0 0
+force -deposit sim/:fft_stage_control:stage_num 000 0
+run
+run
+run
+run
+run
+run
+run
+force -deposit sim/:fft_stage_control:en 1 0
+run
+run
+run
+run
+force -deposit sim/:fft_stage_control:en 0 0
+run
+run
+run
+force -deposit sim/:fft_stage_control:en 1 0
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+# End time: 21:37:34 on Apr 24,2018, Elapsed time: 0:02:35
+# Errors: 0, Warnings: 3
