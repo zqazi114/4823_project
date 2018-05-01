@@ -5,6 +5,7 @@
 
 module fft_stage_control(
 	clk, 		// clock
+	ld_data,	// data initialization signal
 	en, 		// enable signal (active high)
 	stage_num,	// stage number
 	m0_s,		// mux 0 select
@@ -28,7 +29,7 @@ parameter NUMSTAGES = 5;
 
 
 //---------------- define inputs and outputs ---------------------
-input clk, en, stage_num;
+input clk, ld_data, en, stage_num;
 output m0_s, m1_s, m2_s, m3_s;
 output rd_addr0, rd_addr1, rd_addr2, rd_addr3;
 output wr_addr0, wr_addr1, wr_addr2, wr_addr3;
@@ -37,6 +38,7 @@ output stage_done;
 
 //---------------- define port types ---------------------
 wire clk;
+wire ld_data;
 wire en;
 wire [2:0] stage_num;
 wire m0_s;
@@ -84,7 +86,7 @@ address_control #(.NUMSTAGES(NUMSTAGES)) acontrol0(
 
 //---------------- MUX control signal generator ---------------------
 mux_control #(.NUMSTAGES(NUMSTAGES)) mux_ctrl(
-	counter_r, stage_num, m0_s_o, m1_s_o, m2_s_o, m3_s_o); 
+	ld_data, counter_r, stage_num, m0_s_o, m1_s_o, m2_s_o, m3_s_o); 
 
 
 //---------------- code begins here ---------------------

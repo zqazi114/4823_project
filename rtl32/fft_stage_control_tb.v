@@ -10,6 +10,7 @@ parameter WORDSIZE = 16;
 parameter WL=16, IWL=5, FWL=10;
 
 // -------------------- create inputs and oututs -----------------------
+reg ld_data_r;
 reg en_r;
 reg [2:0] stage_num_r;
 wire m0_s, m2_s, m3_s;
@@ -24,6 +25,7 @@ reg clk;
 // -------------------- module being tested -----------------------
 fft_stage_control #(.NUMSTAGES(NUMSTAGES)) fsc0(
 	clk,
+	ld_data_r,
 	en_r,
 	stage_num_r,
 	m0_s, m1_s, m2_s, m3_s,
@@ -36,6 +38,7 @@ fft_stage_control #(.NUMSTAGES(NUMSTAGES)) fsc0(
 initial
 begin
 	clk <= 0;
+	ld_data_r <= 0;
 	stage_num_r <= 0;
 	en_r <= 1;
 end
@@ -49,6 +52,7 @@ end
 // -------------------- testing -----------------------
 always @(posedge clk)
 begin
+	ld_data_r <= #1 1'b1;
 	if(stage_num_r <= 3'b101)
 	begin
 		if(stage_done && en_r) begin 

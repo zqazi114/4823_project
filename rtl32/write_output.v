@@ -9,7 +9,7 @@
  *
  */
 
-module read_input(
+module write_output(
 	clk,		// clock
 	s,			// start signal
 	error,		// error during reading

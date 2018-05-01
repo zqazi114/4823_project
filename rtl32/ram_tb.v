@@ -56,9 +56,9 @@ begin
 		read_addr_r <= read_addr_r + 1;
 		write_addr_r <= write_addr_r + 1;
 		data_in_r <= data_in_r - 1;
-		i = i + 1;
+		i <= i + 1;
 	end else begin
-		i = 0;
+		i <= 0;
 		read_addr_r <= 0;
 		write_addr_r <= 0;
 		rd_en_r <= 1'b1;

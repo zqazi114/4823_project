@@ -6,25 +6,28 @@
 
 module fft(
 	//---control signals for this module---//
-	clk, 		// clock 
-	en,			// tri-state enable
+	clk, 			// clock 
+	en,				// tri-state enable
 	
 	//---for initializing the RAM with samples---//
-	ld_data,	// RAM load signal
-	ld_done,	// response from RAM initializer module
+	ld_data,		// RAM load signal
+	ld_done,		// response from RAM initializer module
+	
+	//---for reading out the RAM ---//
+	output_data,	// output data directly
 	
 	//---datapath---//
-	data_in0,	// 4 banks, so 4 input data buses
-	data_in1,	// " "
-	data_in2,	// " "
-	data_in3,	// " "
-	data_out0,	// 4 banks, so 4 output data buses
-	data_out1,	// " "
-	data_out2,	// " "
-	data_out3,	// " "
+	data_in0,		// 4 banks, so 4 input data buses
+	data_in1,		// " "
+	data_in2,		// " "
+	data_in3,		// " "
+	data_out0,		// 4 banks, so 4 output data buses
+	data_out1,		// " "
+	data_out2,		// " "
+	data_out3,		// " "
 	
 	//---control---//
-	done 		// stage computation completed signal
+	done 			// stage computation completed signal
 );
 
 
@@ -44,10 +47,11 @@ parameter [4:0] STAGE2 	= 5'b00101;
 parameter [4:0] STAGE3 	= 5'b00110;
 parameter [4:0] STAGE4 	= 5'b00111;
 parameter [4:0] DONE	= 5'b01000;
+parameter [4:0] OUTPUT	= 5'b01001;
 
 
 //---------------- define inputs and outputs ---------------------
-input clk, en, ld_data, data_in0, data_in1, data_in2, data_in3;
+input clk, en, ld_data, output_data, data_in0, data_in1, data_in2, data_in3;
 output ld_done, done, data_out0, data_out1, data_out2, data_out3;
 
 //---------------- define port types ---------------------
@@ -55,6 +59,7 @@ wire clk;
 wire en;
 wire ld_data;
 wire ld_done;
+wire output_data;
 wire done;
 reg done_r;
 
@@ -71,7 +76,6 @@ wire [WORDSIZE-1:0] bank0_out, bank1_out, bank2_out, bank3_out;			// input to pe
 wire [WORDSIZE-1:0] pe_in0, pe_in1, pe_in2, pe_in3;						// input to pe
 wire [WORDSIZE-1:0] pe_out0, pe_out1, pe_out2, pe_out3;					// output from pe
 wire [WORDSIZE-1:0] m21_out, m22_out, m23_out, m24_out;					// output from pe
-reg  [WORDSIZE-1:0] data_out0_r, data_out1_r, data_out2_r, data_out3_r;	// final output register
 wire [WORDSIZE-1:0] data_out0, data_out1, data_out2, data_out3;			// final output wire
 
 
@@ -93,11 +97,10 @@ twiddle #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES), .NUMST
 
 //---------------- tri-state buffer ---------------------
 assign done = done_r;
-//assign done 	 = en ? done_r 		: 1'bz;
-//assign data_out0 = en ? data_out0_r : {WORDSIZE{1'bz}};
-//assign data_out1 = en ? data_out1_r : {WORDSIZE{1'bz}};
-//assign data_out2 = en ? data_out2_r : {WORDSIZE{1'bz}};
-//assign data_out3 = en ? data_out3_r : {WORDSIZE{1'bz}};
+assign data_out0 = output_data ? bank0_out : {WORDSIZE{1'bz}};
+assign data_out1 = output_data ? bank1_out : {WORDSIZE{1'bz}};
+assign data_out2 = output_data ? bank2_out : {WORDSIZE{1'bz}};
+assign data_out3 = output_data ? bank3_out : {WORDSIZE{1'bz}};
 
 
 //---------------- RAM modules ---------------------
@@ -110,16 +113,16 @@ reg wr_en0, wr_en1, wr_en2, wr_en3;
 reg cs0, cs1, cs2, cs3;
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank0(
-	clk, rd_addr0_r, wr_addr0_r, rd_en0, wr_en0, cs0, data_in0, data_out0);//bank0_in, bank0_out); 
+	clk, rd_addr0_r, wr_addr0_r, rd_en0, wr_en0, cs0, bank0_in, bank0_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank1(
-	clk, rd_addr1_r, wr_addr1_r, rd_en1, wr_en1, cs1, data_in1, data_out1);//bank1_in, bank1_out); 
+	clk, rd_addr1_r, wr_addr1_r, rd_en1, wr_en1, cs1, bank1_in, bank1_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank2(
-	clk, rd_addr2_r, wr_addr2_r, rd_en2, wr_en2, cs2, data_in2, data_out2);//bank2_in, bank2_out); 
+	clk, rd_addr2_r, wr_addr2_r, rd_en2, wr_en2, cs2, bank2_in, bank2_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank3(
-	clk, rd_addr3_r, wr_addr3_r, rd_en3, wr_en3, cs3, data_in3, data_out3);//bank3_in, bank3_out); 
+	clk, rd_addr3_r, wr_addr3_r, rd_en3, wr_en3, cs3, bank3_in, bank3_out); 
 
 
 //---------------- PE ------------------------
@@ -138,6 +141,7 @@ wire m3_s;
 
 fft_stage_control #(.NUMSTAGES(NUMSTAGES)) control0(
 	clk,
+	ld_data,
 	en_stage,
 	stage_num,
 	m0_s, m1_s,	m2_s, m3_s,
@@ -148,35 +152,38 @@ fft_stage_control #(.NUMSTAGES(NUMSTAGES)) control0(
 	
 
 //---------------- first MUX stage ---------------------
-//assign bank0_in = m0_s ? data_in0 : m21_out;
-//assign bank1_in = m0_s ? data_in1 : m22_out;
-//assign bank2_in = m0_s ? data_in2 : m23_out;
-//assign bank3_in = m0_s ? data_in3 : m24_out;
+assign bank0_in = m0_s ? data_in0 : m21_out;
+assign bank1_in = m0_s ? data_in1 : m22_out;
+assign bank2_in = m0_s ? data_in2 : m23_out;
+assign bank3_in = m0_s ? data_in3 : m24_out;
 
 
 //---------------- second MUX stage ---------------------
-//assign pe_in0 = (m1_s == 2'b00) ? data_out0 : 
-//				(m1_s == 2'b01) ? data_out0 :
-//				(m1_s == 2'b10) ? data_out2 : data_out2 ;
+assign pe_in0 = output_data 	? {WORDSIZE{1'bz}} :
+				(m1_s == 2'b00) ? bank0_out : 
+				(m1_s == 2'b01) ? bank2_out :
+				(m1_s == 2'b10) ? bank0_out : bank0_out;
 
-assign pe_in1 = (m1_s == 2'b00) ? data_out0 : 
-				(m1_s == 2'b01) ? data_out0 :
-				(m1_s == 2'b10) ? data_out2 : data_out2 ;
+assign pe_in1 = output_data 	? {WORDSIZE{1'bz}} :
+				(m1_s == 2'b00) ? bank1_out : 
+				(m1_s == 2'b01) ? bank0_out :
+				(m1_s == 2'b10) ? bank2_out : bank2_out ;
 
-assign pe_in2 = (m1_s == 2'b00) ? data_out0 : 
-				(m1_s == 2'b01) ? data_out0 :
-				(m1_s == 2'b10) ? data_out2 : data_out2 ;
+assign pe_in2 = output_data 	? {WORDSIZE{1'bz}} :
+				(m1_s == 2'b00) ? bank2_out : 
+				(m1_s == 2'b01) ? bank3_out :
+				(m1_s == 2'b10) ? bank1_out : bank1_out ;
 
-assign pe_in3 = (m1_s == 2'b00) ? data_out0 : 
-				(m1_s == 2'b01) ? data_out0 :
-				(m1_s == 2'b10) ? data_out2 : data_out2 ;
-
+assign pe_in3 = output_data 	? {WORDSIZE{1'bz}} :
+				(m1_s == 2'b00) ? bank3_out : 
+				(m1_s == 2'b01) ? bank1_out :
+				(m1_s == 2'b10) ? bank3_out : bank3_out ;
 
 //---------------- third MUX stage ---------------------
 assign m21_out = m2_s ? pe_out0 : pe_out2;
 assign m22_out = m2_s ? pe_out1 : pe_out3;
-assign m23_out = m2_s ? pe_out0 : pe_out2;
-assign m24_out = m2_s ? pe_out1 : pe_out3;
+assign m23_out = m2_s ? pe_out2 : pe_out0;
+assign m24_out = m2_s ? pe_out3 : pe_out1;
 
 
 //---------------- code begins here ---------------------
@@ -193,10 +200,6 @@ begin
 	wr_en3 		<= 0;
 	done_r 		<= 0;
 	stage_num	<= 0;
-	data_out0_r <= 0;
-	data_out1_r <= 0;	
-	data_out2_r <= 0;	
-	data_out3_r <= 0;	
 	en_stage 	<= 0;
 end
 
@@ -207,6 +210,7 @@ function [4:0] get_next_state;
 	input ld_done;
 	input en;
 	input stage_done;
+	input output_data;
 
 	case (state)
 	 IDLE : 
@@ -234,13 +238,18 @@ function [4:0] get_next_state;
 		if (stage_done && en_stage)
 			get_next_state = DONE;
 	 DONE : 
-		if (~en)
+		if (output_data)
+			get_next_state = OUTPUT;
+	 OUTPUT:
+		if (~output_data)
 			get_next_state = IDLE;
 	 default : get_next_state = IDLE;
 	endcase
 endfunction
 
-assign next_state = get_next_state(state, ld_data, ld_done, en, stage_done);
+assign next_state = get_next_state(state, ld_data, ld_done, en, stage_done, output_data);
+
+integer out_addr;
 
 always @(posedge clk)
 begin
@@ -259,6 +268,7 @@ begin
 		DONE : begin
 			done_r <= 1'b1;
 			en_stage <= 1'b0;
+			out_addr = 0;
 		end
 	endcase
 end
@@ -287,7 +297,7 @@ begin
 		end
 		LDRAM : begin
 			if(init_addr < NUMSAMPLES/4) begin
-				//rd_addr0_r <= init_addr;
+				rd_addr0_r <= init_addr;
 				rd_addr1_r <= init_addr;
 				rd_addr2_r <= init_addr;
 				rd_addr3_r <= init_addr;
@@ -297,7 +307,21 @@ begin
 				wr_addr3_r <= init_addr;
 			end
 			init_addr = init_addr + 1;
-		end 
+		end
+		OUTPUT : begin
+			wr_en0 <= 1'b0;
+			wr_en1 <= 1'b0;
+			wr_en2 <= 1'b0;
+			wr_en3 <= 1'b0;
+			rd_addr0_r <= out_addr;
+			rd_addr1_r <= out_addr;
+			rd_addr2_r <= out_addr;
+			rd_addr3_r <= out_addr;
+			if(out_addr < NUMSAMPLES/4) 
+				out_addr = out_addr + 1;
+			else 
+				done_r <= 1'b0;
+		end	
 		default : begin
 			rd_addr0_r <= rd_addr0;
 			rd_addr1_r <= rd_addr1;

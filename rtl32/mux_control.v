@@ -1,4 +1,5 @@
 module mux_control(
+	ld_data,
 	counter,
 	stage_num,
 	m0_s,
@@ -14,10 +15,11 @@ parameter NUMSTAGES = 5;
 parameter STAGE0 = 3'b000, STAGE1 = 3'b001, STAGE2 = 3'b010, STAGE3 = 3'b011, STAGE4 = 3'b100; 
 
 // --------------- define inputs and outputs--------------------
-input counter, stage_num;
+input ld_data, counter, stage_num;
 output m0_s, m1_s, m2_s, m3_s;
 
 // --------------- define port types -----------------------
+wire ld_data;
 wire [NUMSTAGES-3:0] counter;
 wire [2:0] stage_num;
 reg m0_s;
@@ -26,13 +28,16 @@ reg m2_s;
 reg m3_s;
 
 // --------------- code begins here -----------------------
-always @(counter, stage_num)
+always @(ld_data, counter, stage_num)
 begin
-	m0_s <= 1'b0;
+	if(ld_data)
+		m0_s <= 1'b0;
+	else 
+		m0_s <= 1'b1;
 	m3_s <= 1'b0;
 	case(stage_num)
 		STAGE0 : begin
-			m1_s <= 2'b11;
+			m1_s <= 2'b10;
 			m2_s <= 1'b0;
 		end
 		STAGE1 : begin

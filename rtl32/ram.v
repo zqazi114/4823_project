@@ -44,8 +44,8 @@ end
 
 always @(negedge clk)
 begin : WRITE
-	if(wr_en)
-		memory[write_addr] <= data_in;
+//	if(wr_en)
+//		memory[write_addr] <= data_in;
 end
 
 endmodule
