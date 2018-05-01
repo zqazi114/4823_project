@@ -82,6 +82,11 @@ reg  [WORDSIZE-1:0] twiddle_r;
 
 assign twiddle = twiddle_r;
 
+twiddle #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES), .NUMSTAGES(NUMSTAGES)) twiddle0(
+	clk,
+	ld_twiddle,
+	
+);
 
 //---------------- tri-state buffer ---------------------
 assign done = done_r;
@@ -112,12 +117,12 @@ ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank3(
 	clk, rd_addr3, wr_addr3, rd_en3, wr_en3, cs3, data_in3, data_out3);//bank3_in, bank3_out); 
 
 
-//------------------------- PE ------------------------
+//---------------- PE ------------------------
 pe #(.WORDSIZE(WORDSIZE), .WL(16), .IWL(2), .FWL(13)) pe0(
 	pe_in0, pe_in1, pe_in2, pe_in3, twiddle, pe_out0, pe_out1, pe_out2, pe_out3);
 
 
-//---------------- Control signal generator ---------------------
+//---------------- control signal generator ---------------------
 reg en_stage;
 reg [2:0] stage_num;
 wire stage_done;
@@ -131,6 +136,8 @@ fft_stage_control #(.NUMSTAGES(NUMSTAGES)) control0(
 	en_stage,
 	stage_num,
 	m0_s, m1_s,	m2_s, m3_s,
+	rd_addr0, rd_addr1, rd_addr2, rd_addr3,
+	wr_addr0, wr_addr1, wr_addr2, wr_addr3,
 	stage_done
 );
 	

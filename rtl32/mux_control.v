@@ -7,13 +7,17 @@ module mux_control(
 	m3_s,
 );
 
+// --------------- parameters -----------------------
 parameter NUMSTAGES = 5;
 
+// --------------- states -----------------------
 parameter STAGE0 = 3'b000, STAGE1 = 3'b001, STAGE2 = 3'b010, STAGE3 = 3'b011, STAGE4 = 3'b100; 
 
+// --------------- define inputs and outputs--------------------
 input counter, stage_num;
 output m0_s, m1_s, m2_s, m3_s;
 
+// --------------- define port types -----------------------
 wire [NUMSTAGES-3:0] counter;
 wire [2:0] stage_num;
 reg m0_s;
@@ -21,11 +25,11 @@ reg [1:0] m1_s;
 reg m2_s;
 reg m3_s;
 
+// --------------- code begins here -----------------------
 always @(counter, stage_num)
 begin
 	m0_s <= 1'b0;
 	m3_s <= 1'b0;
-
 	case(stage_num)
 		STAGE0 : begin
 			m1_s <= 2'b11;

@@ -8,18 +8,14 @@
 # //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
 # //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
 # //
-# do fft_stage_op.do
-# vsim -do "fft_stage_op.do" 
-# Start time: 14:00:12 on Apr 25,2018
+# do FP_MUL.do
+# vsim -do "FP_MUL.do" 
+# Start time: 22:15:48 on Apr 26,2018
 # ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft
-# Loading work.ram
-# Loading work.pe
-# Loading work.qadd
-# Loading work.qmult
-# Loading work.fft_stage_control
-# Loading work.mux_control
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(42): [TFMPC] - Too few port connections. Expected 7, found 6.
-#         Region: :fft:control0:mux_ctrl
-# End time: 14:00:35 on Apr 25,2018, Elapsed time: 0:00:23
-# Errors: 0, Warnings: 2
+# ** Error: (vsim-3170) Could not find '/homes/user/spring18/zq2154/ELEN4823/4823_project/fft32_lib.FP_MUL'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./FP_MUL.do PAUSED at line 1
+# End time: 22:18:01 on Apr 26,2018, Elapsed time: 0:02:13
+# Errors: 1, Warnings: 1

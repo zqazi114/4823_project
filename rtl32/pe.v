@@ -1,41 +1,39 @@
 module pe(
-	in0,
+	in0,		// inputs
 	in1,
 	in2,
 	in3,
-	twiddle,
-	out0,
+	twiddle,	// twiddle factor
+	out0,		// outputs
 	out1,
 	out2,
 	out3
 );
 
-// parameters
+//------------------------parameters----------------------------
 parameter WORDSIZE = 16;
 parameter WL=16, IWL=2, FWL=10;
 
-// states
 
-
-// define inputs and outputs
+// ----------------define inputs and outputs----------------------------
 input in0,in1,in2,in3,twiddle;
 output out0,out1,out2,out3;
 
-// define port types
+// --------------------define port types----------------------------
 wire [WORDSIZE-1:0] in0,in1,in2,in3,twiddle;
 wire [WORDSIZE-1:0] out0,out1,out2,out3;
 
-// define local variables
+// -------------------define local variables----------------------------
 wire [WORDSIZE-1:0] in1_neg, in3_neg;
 wire [WORDSIZE-1:0] out20, out30;
 wire ovr2, ovr3;
 
-// code begins here
+// ---------------------code begins here----------------------------
 
 assign in1_neg = {~in1[WORDSIZE-1],in1[WORDSIZE-2:0]};
 assign in3_neg = {~in3[WORDSIZE-1],in3[WORDSIZE-2:0]};
 
-// modules
+// ------------------------modules----------------------------
 qadd #(FWL,WL) add0(
 	.a(in0),
 	.b(in1),
