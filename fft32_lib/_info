@@ -28,54 +28,94 @@ r1
 !s90 rtl32/address_control.v|
 !i113 1
 Z4 o-L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
-vfft
-!s110 1525150616
+vaddress_control_tb
+!s110 1525186207
 !i10b 1
-!s100 EcPeGKTF^9zTLWQzW6B^O1
-IJNTzNko_6iV;_Ye;;_YMO0
+!s100 LEm1E8Q_;oEGHcf>3e4dS1
+IJITS^]TMcc4Gi^OFd6oCc1
 R1
-R2
-w1525150172
-8rtl32/fft.v
-Frtl32/fft.v
+Z5 d/homes/user/spring18/zq2154/ELEN4823/4823_project/qsim_rtl
+w1525186194
+8../rtl32/address_control_tb.v
+F../rtl32/address_control_tb.v
+L0 4
+R3
+r1
+!s85 0
+31
+!s108 1525186207.647923
+!s107 ../rtl32/address_control_tb.v|
+!s90 ../rtl32/address_control_tb.v|
+!i113 1
+R4
+vfft
+!s110 1525198116
+!i10b 1
+!s100 8klN24T`Q57f[97BnR[gZ1
+IaO;7<^Fl02EBCGjai<_TQ0
+R1
+R5
+w1525198113
+8../rtl32/fft.v
+F../rtl32/fft.v
 L0 7
 R3
 r1
 !s85 0
 31
-!s108 1525150616.759677
-!s107 rtl32/fft.v|
-!s90 rtl32/fft.v|
+!s108 1525198116.520079
+!s107 ../rtl32/fft.v|
+!s90 ../rtl32/fft.v|
 !i113 1
 R4
 vfft_stage_control
-!s110 1525150611
+!s110 1525190001
 !i10b 1
-!s100 <V9n<:<Oc9BeU6E@R8UWf0
-IVlLJ0jDa9E[Q2^mN0NSTk0
+!s100 LM@?DoJ6f41<F@B;K6aT22
+IJ0H8=jhe2b;^aCLfn48@_0
 R1
-R2
-w1525150605
-8rtl32/fft_stage_control.v
-Frtl32/fft_stage_control.v
+R5
+w1525189999
+8../rtl32/fft_stage_control.v
+F../rtl32/fft_stage_control.v
 L0 6
 R3
 r1
 !s85 0
 31
-!s108 1525150611.199237
-!s107 rtl32/fft_stage_control.v|
-!s90 rtl32/fft_stage_control.v|
+!s108 1525190001.650506
+!s107 ../rtl32/fft_stage_control.v|
+!s90 ../rtl32/fft_stage_control.v|
+!i113 1
+R4
+vfft_stage_control_tb
+!s110 1525190122
+!i10b 1
+!s100 zS]58?WXU2T9lm:3cIc2A3
+Iz8?KZKi7kzEaNQ28CUU]31
+R1
+R5
+w1525190120
+8../rtl32/fft_stage_control_tb.v
+F../rtl32/fft_stage_control_tb.v
+L0 4
+R3
+r1
+!s85 0
+31
+!s108 1525190122.459736
+!s107 ../rtl32/fft_stage_control_tb.v|
+!s90 ../rtl32/fft_stage_control_tb.v|
 !i113 1
 R4
 vfft_tb
-!s110 1524678920
+!s110 1525198117
 !i10b 1
-!s100 >^CZ3<V_maB7Jm60KDUhL0
-IjQhbP]68gZO<nR`BU`5eK0
+!s100 RHM6OieSNE_]km7Ol<I140
+IVfnA3ch72foE[gCboPUW;1
 R1
-Z5 d/homes/user/spring18/zq2154/ELEN4823/4823_project/qsim_rtl
-w1524678917
+R5
+w1525198111
 8../rtl32/fft_tb.v
 F../rtl32/fft_tb.v
 L0 9
@@ -83,7 +123,7 @@ R3
 r1
 !s85 0
 31
-!s108 1524678920.875113
+!s108 1525198117.818134
 !s107 ../rtl32/fft_tb.v|
 !s90 ../rtl32/fft_tb.v|
 !i113 1
@@ -108,6 +148,26 @@ r1
 !s90 rtl32/mux_control.v|
 !i113 1
 R4
+vmux_control_tb
+!s110 1525185961
+!i10b 1
+!s100 E1ZniW=`LiS:<PJ8Xc91f3
+IgzonYDRGShA[cS84IEi6U0
+R1
+R5
+w1525185956
+8../rtl32/mux_control_tb.v
+F../rtl32/mux_control_tb.v
+L0 4
+R3
+r1
+!s85 0
+31
+!s108 1525185961.052112
+!s107 ../rtl32/mux_control_tb.v|
+!s90 ../rtl32/mux_control_tb.v|
+!i113 1
+R4
 vpe
 !s110 1524602271
 !i10b 1
@@ -126,6 +186,26 @@ r1
 !s108 1524602271.082791
 !s107 rtl32/pe.v|
 !s90 rtl32/pe.v|
+!i113 1
+R4
+vpe_tb
+!s110 1525184940
+!i10b 1
+!s100 Qoc050;7>j]7G1i[80Jzm2
+IYeSMha3ClaJ=JMaXUY2<=2
+R1
+R5
+w1525184934
+8../rtl32/pe_tb.v
+F../rtl32/pe_tb.v
+L0 3
+R3
+r1
+!s85 0
+31
+!s108 1525184940.274429
+!s107 ../rtl32/pe_tb.v|
+!s90 ../rtl32/pe_tb.v|
 !i113 1
 R4
 vqadd
@@ -208,6 +288,26 @@ r1
 !s90 ../rtl32/ram.v|
 !i113 1
 R4
+vram_tb
+!s110 1525186816
+!i10b 1
+!s100 aY`o]MF5jA?KfdLT7k]8e0
+Ikm=jO4]:7IMAcDRAc^K0A3
+R1
+R5
+w1525186814
+8../rtl32/ram_tb.v
+F../rtl32/ram_tb.v
+L0 4
+R3
+r1
+!s85 0
+31
+!s108 1525186816.018381
+!s107 ../rtl32/ram_tb.v|
+!s90 ../rtl32/ram_tb.v|
+!i113 1
+R4
 vread_input
 !s110 1524671927
 !i10b 1
@@ -226,6 +326,26 @@ r1
 !s108 1524671927.474430
 !s107 ../rtl32/read_input.v|
 !s90 ../rtl32/read_input.v|
+!i113 1
+R4
+vrom
+!s110 1525191481
+!i10b 1
+!s100 E9U=>54PKFM>=?E442=@L0
+I[JAV?n4FhoCGmdlWD=1=G0
+R1
+R5
+w1525151738
+8../rtl32/rom.v
+F../rtl32/rom.v
+L0 1
+R3
+r1
+!s85 0
+31
+!s108 1525191481.690260
+!s107 ../rtl32/rom.v|
+!s90 ../rtl32/rom.v|
 !i113 1
 R4
 vtwiddle

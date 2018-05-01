@@ -12,7 +12,7 @@ module fft_tb(
 
 //---------------- parameters ---------------------
 parameter WORDSIZE = 16;
-parameter ADDRSIZE = 8;
+parameter ADDRSIZE = 3;
 parameter NUMSTAGES = 5;
 
 //---------------- states ---------------------
@@ -21,11 +21,6 @@ parameter [2:0] LDRAM 	= 3'b001;
 parameter [2:0] RAMRDY 	= 3'b010;
 parameter [2:0] RUNNING	= 3'b011;
 parameter [2:0] DONE	= 3'b100;
-
-//---------------- define inputs and outputs ---------------------
-
-
-//---------------- define port types ---------------------
 
 
 //---------------- define local variables ---------------------
@@ -56,7 +51,6 @@ read_input #(.WORDSIZE(WORDSIZE), .NUMSAMPLES(32)) r0(
 	ld_done
 );
 
-
 //---------------- FFT module ---------------------
 fft #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) fft0(
 	clk, en_r, 
@@ -78,7 +72,7 @@ end
 
 always @(*)
 begin
-	clk <= #0.1 ~clk;
+	clk <= #0.05 ~clk;
 end
 
 
@@ -119,6 +113,7 @@ begin
 		IDLE 	: ld_data_r <= 1'b1; 
 		LDRAM 	: ;
 		RAMRDY  : en_r <= 1'b1;
+		RUNNING : en_r <= 1'b1;
 		DONE	: en_r <= 1'b0;
 	endcase
 end

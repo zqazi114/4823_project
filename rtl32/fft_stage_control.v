@@ -50,41 +50,41 @@ reg stage_done;
 
 //---------------- define local variables ---------------------
 reg [NUMSTAGES-3:0] counter_r;
-reg m0_s_r;
-reg [1:0] m1_s_r;
-reg m2_s_r;
-reg m3_s_r;
-reg [NUMSTAGES-3:0] rd_addr0_r, rd_addr1_r, rd_addr2_r, rd_addr3_r;
-reg [NUMSTAGES-3:0] wr_addr0_r, wr_addr1_r, wr_addr2_r, wr_addr3_r;
+wire m0_s_o;
+wire [1:0] m1_s_o;
+wire m2_s_o;
+wire m3_s_o;
+wire [NUMSTAGES-3:0] rd_addr0_o, rd_addr1_o, rd_addr2_o, rd_addr3_o;
+wire [NUMSTAGES-3:0] wr_addr0_o, wr_addr1_o, wr_addr2_o, wr_addr3_o;
 
 
 //---------------- tristate buffer ---------------------
-assign m0_s = en ? m0_s_r : 1'bz;
-assign m1_s = en ? m1_s_r : 2'bzz;
-assign m2_s = en ? m2_s_r : 1'bz;
-assign m3_s = en ? m3_s_r : 1'bz;
+assign m0_s = en ? m0_s_o : 1'bz;
+assign m1_s = en ? m1_s_o : 2'bzz;
+assign m2_s = en ? m2_s_o : 1'bz;
+assign m3_s = en ? m3_s_o : 1'bz;
 
-assign rd_addr0 = en ? rd_addr0_r : {NUMSTAGES-2{1'bz}};
-assign rd_addr1 = en ? rd_addr1_r : {NUMSTAGES-2{1'bz}};
-assign rd_addr2 = en ? rd_addr2_r : {NUMSTAGES-2{1'bz}};
-assign rd_addr3 = en ? rd_addr3_r : {NUMSTAGES-2{1'bz}};
-assign wr_addr0 = en ? wr_addr0_r : {NUMSTAGES-2{1'bz}};
-assign wr_addr1 = en ? wr_addr1_r : {NUMSTAGES-2{1'bz}};
-assign wr_addr2 = en ? wr_addr2_r : {NUMSTAGES-2{1'bz}};
-assign wr_addr3 = en ? wr_addr3_r : {NUMSTAGES-2{1'bz}};
+assign rd_addr0 = en ? rd_addr0_o : {NUMSTAGES-2{1'bz}};
+assign rd_addr1 = en ? rd_addr1_o : {NUMSTAGES-2{1'bz}};
+assign rd_addr2 = en ? rd_addr2_o : {NUMSTAGES-2{1'bz}};
+assign rd_addr3 = en ? rd_addr3_o : {NUMSTAGES-2{1'bz}};
+assign wr_addr0 = en ? wr_addr0_o : {NUMSTAGES-2{1'bz}};
+assign wr_addr1 = en ? wr_addr1_o : {NUMSTAGES-2{1'bz}};
+assign wr_addr2 = en ? wr_addr2_o : {NUMSTAGES-2{1'bz}};
+assign wr_addr3 = en ? wr_addr3_o : {NUMSTAGES-2{1'bz}};
 
 
 //---------------- address generator ---------------------
 address_control #(.NUMSTAGES(NUMSTAGES)) acontrol0(
 	counter_r, stage_num, 
-	rd_addr0_r, rd_addr1_r, rd_addr2_r, rd_addr3_r,	
-	wr_addr0_r, wr_addr1_r, wr_addr2_r, wr_addr3_r
+	rd_addr0_o, rd_addr1_o, rd_addr2_o, rd_addr3_o,	
+	wr_addr0_o, wr_addr1_o, wr_addr2_o, wr_addr3_o
 );
 
 
 //---------------- MUX control signal generator ---------------------
 mux_control #(.NUMSTAGES(NUMSTAGES)) mux_ctrl(
-	counter_r, stage_num, m0_s_r, m1_s_r, m2_s_r, m3_s_r); 
+	counter_r, stage_num, m0_s_o, m1_s_o, m2_s_o, m3_s_o); 
 
 
 //---------------- code begins here ---------------------
@@ -99,10 +99,12 @@ begin
 	if(en) begin
 		counter_r <= counter_r + 1;
 		if(counter_r == 3'b111)
-			stage_done <= ~stage_done;
+			stage_done <= 1'b1;
 	end
-	else 
+	else begin 
 		counter_r <= {NUMSTAGES-3{1'b0}};
+		stage_done <= 1'b0;
+	end
 end
 
 endmodule

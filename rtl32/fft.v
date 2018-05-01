@@ -50,7 +50,6 @@ parameter [4:0] DONE	= 5'b01000;
 input clk, en, ld_data, data_in0, data_in1, data_in2, data_in3;
 output ld_done, done, data_out0, data_out1, data_out2, data_out3;
 
-
 //---------------- define port types ---------------------
 wire clk;
 wire en;
@@ -79,13 +78,17 @@ wire [WORDSIZE-1:0] data_out0, data_out1, data_out2, data_out3;			// final outpu
 //---------------- twiddle wires and regs ---------------------
 wire [WORDSIZE-1:0] twiddle;
 reg  [WORDSIZE-1:0] twiddle_r;
+reg  [NUMSTAGES-3:0] counter_r;
+reg  [2:0] stage_num_r;
 
 assign twiddle = twiddle_r;
 
 twiddle #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES), .NUMSTAGES(NUMSTAGES)) twiddle0(
 	clk,
 	ld_twiddle,
-	
+	counter_r,
+	stage_num_r,
+	twiddle
 );
 
 //---------------- tri-state buffer ---------------------
@@ -98,23 +101,25 @@ assign done = done_r;
 
 
 //---------------- RAM modules ---------------------
-reg [ADDRSIZE-1:0] rd_addr0, rd_addr1, rd_addr2, rd_addr3;
-reg [ADDRSIZE-1:0] wr_addr0, wr_addr1, wr_addr2, wr_addr3;
+wire [ADDRSIZE-1:0] rd_addr0, rd_addr1, rd_addr2, rd_addr3;
+wire [ADDRSIZE-1:0] wr_addr0, wr_addr1, wr_addr2, wr_addr3;
+reg [ADDRSIZE-1:0] rd_addr0_r, rd_addr1_r, rd_addr2_r, rd_addr3_r;
+reg [ADDRSIZE-1:0] wr_addr0_r, wr_addr1_r, wr_addr2_r, wr_addr3_r;
 reg rd_en0, rd_en1, rd_en2, rd_en3;
 reg wr_en0, wr_en1, wr_en2, wr_en3;
 reg cs0, cs1, cs2, cs3;
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank0(
-	clk, rd_addr0, wr_addr0, rd_en0, wr_en0, cs0, data_in0, data_out0);//bank0_in, bank0_out); 
+	clk, rd_addr0_r, wr_addr0_r, rd_en0, wr_en0, cs0, data_in0, data_out0);//bank0_in, bank0_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank1(
-	clk, rd_addr1, wr_addr1, rd_en1, wr_en1, cs1, data_in1, data_out1);//bank1_in, bank1_out); 
+	clk, rd_addr1_r, wr_addr1_r, rd_en1, wr_en1, cs1, data_in1, data_out1);//bank1_in, bank1_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank2(
-	clk, rd_addr2, wr_addr2, rd_en2, wr_en2, cs2, data_in2, data_out2);//bank2_in, bank2_out); 
+	clk, rd_addr2_r, wr_addr2_r, rd_en2, wr_en2, cs2, data_in2, data_out2);//bank2_in, bank2_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank3(
-	clk, rd_addr3, wr_addr3, rd_en3, wr_en3, cs3, data_in3, data_out3);//bank3_in, bank3_out); 
+	clk, rd_addr3_r, wr_addr3_r, rd_en3, wr_en3, cs3, data_in3, data_out3);//bank3_in, bank3_out); 
 
 
 //---------------- PE ------------------------
@@ -150,9 +155,9 @@ fft_stage_control #(.NUMSTAGES(NUMSTAGES)) control0(
 
 
 //---------------- second MUX stage ---------------------
-assign pe_in0 = (m1_s == 2'b00) ? data_out0 : 
-				(m1_s == 2'b01) ? data_out0 :
-				(m1_s == 2'b10) ? data_out2 : data_out2 ;
+//assign pe_in0 = (m1_s == 2'b00) ? data_out0 : 
+//				(m1_s == 2'b01) ? data_out0 :
+//				(m1_s == 2'b10) ? data_out2 : data_out2 ;
 
 assign pe_in1 = (m1_s == 2'b00) ? data_out0 : 
 				(m1_s == 2'b01) ? data_out0 :
@@ -192,6 +197,7 @@ begin
 	data_out1_r <= 0;	
 	data_out2_r <= 0;	
 	data_out3_r <= 0;	
+	en_stage 	<= 0;
 end
 
 //---------------- state logic ---------------------
@@ -213,19 +219,19 @@ function [4:0] get_next_state;
 		if (en)
 			get_next_state = STAGE0;
 	 STAGE0 :
-		if (stage_done)
+		if (stage_done && en_stage)
 			get_next_state = STAGE1;
 	 STAGE1 :
-		if (~stage_done)
+		if (stage_done && en_stage)
 			get_next_state = STAGE2;
 	 STAGE2 :
-		if (stage_done)
+		if (stage_done && en_stage)
 			get_next_state = STAGE3;
 	 STAGE3 :
-		if (~stage_done)
+		if (stage_done && en_stage)
 			get_next_state = STAGE4;
 	 STAGE4 :
-		if (stage_done)
+		if (stage_done && en_stage)
 			get_next_state = DONE;
 	 DONE : 
 		if (~en)
@@ -239,30 +245,17 @@ assign next_state = get_next_state(state, ld_data, ld_done, en, stage_done);
 always @(posedge clk)
 begin
 	state <= next_state;
+	stage_num <= state - 3'b011;
 	case(state)
 		IDLE : begin
 			done_r <= 1'b0;
 		end
-		STAGE0 : begin
-			stage_num <= 3'b000;
-			en_stage <= 1'b1;
-		end	
-		STAGE1 : begin
-			stage_num <= 3'b001;
-			en_stage <= 1'b1;
-		end	
-		STAGE2 : begin
-			stage_num <= 3'b010;
-			en_stage <= 1'b1;
-		end	
-		STAGE3 : begin
-			stage_num <= 3'b011;
-			en_stage <= 1'b1;
-		end	
-		STAGE4 : begin
-			stage_num <= 3'b100;
-			en_stage <= 1'b1;
-		end	
+		STAGE0, STAGE1, STAGE2, STAGE3, STAGE4 : begin
+			if(stage_done && en_stage)
+				en_stage <= 1'b0;
+			else if(~en_stage)
+				en_stage <= 1'b1;
+		end
 		DONE : begin
 			done_r <= 1'b1;
 			en_stage <= 1'b0;
@@ -275,35 +268,46 @@ integer init_addr;
 //---------------- RAM initialization logic ---------------------
 always @(posedge clk)
 begin
+	cs0    <= 1'b1;
+	cs1    <= 1'b1;
+	cs2    <= 1'b1;
+	cs3    <= 1'b1;
+	rd_en0 <= 1'b1;
+	rd_en1 <= 1'b1;
+	rd_en2 <= 1'b1;
+	rd_en3 <= 1'b1;	
+	wr_en0 <= 1'b1;
+	wr_en1 <= 1'b1;
+	wr_en2 <= 1'b1;
+	wr_en3 <= 1'b1;
+	
 	case(state)
 		IDLE : begin
 			init_addr = 0;
-			cs0    <= 1'b1;
-			cs1    <= 1'b1;
-			cs2    <= 1'b1;
-			cs3    <= 1'b1;
-			rd_en0 <= 1'b1;
-			rd_en1 <= 1'b1;
-			rd_en2 <= 1'b1;
-			rd_en3 <= 1'b1;	
-			wr_en0 <= 1'b1;
-			wr_en1 <= 1'b1;
-			wr_en2 <= 1'b1;
-			wr_en3 <= 1'b1;
 		end
 		LDRAM : begin
 			if(init_addr < NUMSAMPLES/4) begin
-				rd_addr0 <= init_addr;
-				rd_addr1 <= init_addr;
-				rd_addr2 <= init_addr;
-				rd_addr3 <= init_addr;
-				wr_addr0 <= init_addr;
-				wr_addr1 <= init_addr;
-				wr_addr2 <= init_addr;
-				wr_addr3 <= init_addr;
+				//rd_addr0_r <= init_addr;
+				rd_addr1_r <= init_addr;
+				rd_addr2_r <= init_addr;
+				rd_addr3_r <= init_addr;
+				wr_addr0_r <= init_addr;
+				wr_addr1_r <= init_addr;
+				wr_addr2_r <= init_addr;
+				wr_addr3_r <= init_addr;
 			end
 			init_addr = init_addr + 1;
-		end
+		end 
+		default : begin
+			rd_addr0_r <= rd_addr0;
+			rd_addr1_r <= rd_addr1;
+			rd_addr2_r <= rd_addr2;
+			rd_addr3_r <= rd_addr3;
+			wr_addr0_r <= wr_addr0;
+			wr_addr1_r <= wr_addr1;
+			wr_addr2_r <= wr_addr2;
+			wr_addr3_r <= wr_addr3;
+		end	
 	endcase
 end
 
