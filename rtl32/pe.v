@@ -34,6 +34,7 @@ wire ovr20, ovr21, ovr30, ovr31;
 assign in1_neg = {~in1[WORDSIZE-1],in1[WORDSIZE-2:0]};
 assign in3_neg = {~in3[WORDSIZE-1],in3[WORDSIZE-2:0]};
 
+
 // ----------------modules----------------------------
 qadd #(FWL,WL) add0(
 	.a(in0),

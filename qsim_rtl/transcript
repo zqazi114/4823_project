@@ -10,7 +10,7 @@
 # //
 vsim work.fft_tb
 # vsim 
-# Start time: 21:19:52 on May 05,2018
+# Start time: 23:22:00 on May 05,2018
 # ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
 # Loading work.fft_tb
 # Loading work.read_input
@@ -24,61 +24,11 @@ vsim work.fft_tb
 # Loading work.fft_stage_control
 # Loading work.address_control
 # Loading work.mux_control
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
+# ** Warning: (vsim-3017) ../rtl32/fft.v(88): [TFMPC] - Too few port connections. Expected 7, found 6.
+#         Region: :fft_tb:fft0:twiddle0
 # ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
 #         Region: :fft_tb:fft0:control0:mux_ctrl
 add wave *
-delete wave *
-add wave *
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:bank0_in
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:bank0_out
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:cs
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:data_in0
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:data_out0
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:m0_s
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:m21_out
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:pe_in0
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:pe_out0
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:rd_addr0_r
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:state
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:bank0_in
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:bank0_out
-run 30ns
-# Causality operation skipped due to absence of debug database file
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:wr_en
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:rd_en
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 30ns
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:m1_s
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 30ns
+run 20ns
+# End time: 23:39:32 on May 05,2018, Elapsed time: 0:17:32
+# Errors: 0, Warnings: 3

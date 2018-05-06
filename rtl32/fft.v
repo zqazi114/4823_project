@@ -80,19 +80,18 @@ wire [WORDSIZE-1:0] data_out0, data_out1, data_out2, data_out3;			// final outpu
 
 
 //---------------- twiddle wires and regs ---------------------
-wire [WORDSIZE-1:0] twiddle;
-reg  [WORDSIZE-1:0] twiddle_r;
+wire [WORDSIZE-1:0] twiddle_r, twiddle_i;
 reg  [NUMSTAGES-3:0] counter_r;
 reg  [2:0] stage_num_r;
 
-assign twiddle = twiddle_r;
 
 twiddle #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES), .NUMSTAGES(NUMSTAGES)) twiddle0(
 	clk,
 	ld_twiddle,
 	counter_r,
 	stage_num_r,
-	twiddle
+	twiddle_r,
+	twiddle_i
 );
 
 //---------------- tri-state buffer ---------------------
@@ -127,7 +126,7 @@ ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank3(
 
 //---------------- PE ------------------------
 pe #(.WORDSIZE(WORDSIZE), .WL(16), .IWL(2), .FWL(13)) pe0(
-	pe_in0, pe_in1, pe_in2, pe_in3, twiddle, pe_out0, pe_out1, pe_out2, pe_out3);
+	pe_in0, pe_in1, pe_in2, pe_in3, twiddle_r, twiddle_i, pe_out0, pe_out1, pe_out2, pe_out3);
 
 
 //---------------- control signal generator ---------------------
@@ -168,7 +167,6 @@ assign bank1_in = ~m0_s ? data_in1 : m22_out;
 assign bank2_in = ~m0_s ? data_in2 : m23_out;
 assign bank3_in = ~m0_s ? data_in3 : m24_out;
 
-
 //---------------- second MUX stage ---------------------
 assign pe_in0 = output_data 	? {WORDSIZE{1'bz}} :
 				(m1_s == 2'b00) ? bank0_out : 
@@ -178,17 +176,17 @@ assign pe_in0 = output_data 	? {WORDSIZE{1'bz}} :
 assign pe_in1 = output_data 	? {WORDSIZE{1'bz}} :
 				(m1_s == 2'b00) ? bank1_out : 
 				(m1_s == 2'b01) ? bank0_out :
-				(m1_s == 2'b10) ? bank2_out : bank2_out ;
+				(m1_s == 2'b10) ? bank2_out : bank2_out;
 
 assign pe_in2 = output_data 	? {WORDSIZE{1'bz}} :
 				(m1_s == 2'b00) ? bank2_out : 
 				(m1_s == 2'b01) ? bank3_out :
-				(m1_s == 2'b10) ? bank1_out : bank1_out ;
+				(m1_s == 2'b10) ? bank1_out : bank1_out;
 
 assign pe_in3 = output_data 	? {WORDSIZE{1'bz}} :
 				(m1_s == 2'b00) ? bank3_out : 
 				(m1_s == 2'b01) ? bank1_out :
-				(m1_s == 2'b10) ? bank3_out : bank3_out ;
+				(m1_s == 2'b10) ? bank3_out : bank3_out;
 
 //---------------- third MUX stage ---------------------
 assign m21_out = m2_s ? pe_out0 : pe_out2;
@@ -272,10 +270,7 @@ begin
 		end
 		STAGE0, STAGE1, STAGE2, STAGE3, STAGE4 : begin
 			if(stage_done && en_stage)
-			begin
 				en_stage <= 1'b0;
-				wr_en <= 1'b0;
-			end
 			else if(~en_stage)
 				en_stage <= 1'b1;
 		end
@@ -292,15 +287,14 @@ integer init_addr;
 //---------------- RAM initialization logic ---------------------
 always @(posedge clk)
 begin
-	cs    <= 1'b1;
-	rd_en <= 1'b1;
-	wr_en <= 1'b1;
-	
 	case(state)
 		IDLE : begin
 			init_addr = 0;
 		end
 		LDRAM : begin
+			cs <= 1'b1;
+			rd_en <= 1'b1;
+			wr_en <= 1'b1;
 			if(init_addr < NUMSAMPLES/4) begin
 				rd_addr0_r <= init_addr;
 				rd_addr1_r <= init_addr;
@@ -313,6 +307,17 @@ begin
 			end
 			init_addr = init_addr + 1;
 		end
+		RAMRDY : begin
+			wr_en <= 1'b0;
+		end
+		STAGE0, STAGE1, STAGE2, STAGE3, STAGE4 : begin
+			if(stage_done && en_stage)
+				wr_en <= 1'b0;
+			else 
+				wr_en <= 1'b0;
+			cs <= 1'b1;
+			rd_en <= 1'b1;
+		end	
 		DONE : begin
 			wr_en <= 1'b0;
 		end
