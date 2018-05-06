@@ -15,8 +15,8 @@ reg en_r;
 reg [2:0] stage_num_r;
 wire m0_s, m2_s, m3_s;
 wire [1:0] m1_s;
-wire [NUMSTAGES-3:0] rd_addr0, rd_addr1, rd_addr2, rd_addr3;
-wire [NUMSTAGES-3:0] wr_addr0, wr_addr1, wr_addr2, wr_addr3;
+wire [NUMSTAGES-3:0] r_addr_0_1, w_addr_0_1;
+wire [NUMSTAGES-3:0] r_addr_2_3, w_addr_2_3;
 wire stage_done;
 
 // -------------------- testbench variables -----------------------
@@ -29,8 +29,8 @@ fft_stage_control #(.NUMSTAGES(NUMSTAGES)) fsc0(
 	en_r,
 	stage_num_r,
 	m0_s, m1_s, m2_s, m3_s,
-	rd_addr0, rd_addr1, rd_addr2, rd_addr3,
-	wr_addr0, wr_addr1, wr_addr2, wr_addr3,
+	r_addr_0_1, w_addr_0_1,
+	r_addr_2_3, w_addr_2_3,
 	stage_done
 );
 

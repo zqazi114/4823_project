@@ -9,33 +9,33 @@ z2
 cModel Technology
 Z0 d/homes/user/spring18/zq2154/ELEN4823/4823_project
 vaddress_control
-!s110 1525150584
+!s110 1525563642
 !i10b 1
-!s100 7nYnLG;XA1:367L;C]O7@0
-IEhaJ?9GgWbRR:heD0@6>_1
+!s100 1ko@9^o6fDOmNBXDO7D4m3
+IFZOWbcSQ[[EF2fTgf7:GD1
 Z1 V`JN@9S9cnhjKRR_L]QIcM3
-Z2 d/user/spring18/zq2154/ELEN4823/4823_project
-w1525149855
-8rtl32/address_control.v
-Frtl32/address_control.v
+Z2 d/homes/user/spring18/zq2154/ELEN4823/4823_project/qsim_rtl
+w1525563625
+8../rtl32/address_control.v
+F../rtl32/address_control.v
 L0 1
 Z3 OL;L;10.3d;59
 r1
 !s85 0
 31
-!s108 1525150584.547281
-!s107 rtl32/address_control.v|
-!s90 rtl32/address_control.v|
+!s108 1525563642.221940
+!s107 ../rtl32/address_control.v|
+!s90 ../rtl32/address_control.v|
 !i113 1
 Z4 o-L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
 vaddress_control_tb
-!s110 1525186207
+!s110 1525563643
 !i10b 1
-!s100 LEm1E8Q_;oEGHcf>3e4dS1
-IJITS^]TMcc4Gi^OFd6oCc1
+!s100 =UWGBXVboLh96bIg^=8Y@3
+I76?bcVnn@=Xoc0NoGJzJ21
 R1
-Z5 d/homes/user/spring18/zq2154/ELEN4823/4823_project/qsim_rtl
-w1525186194
+R2
+w1525563017
 8../rtl32/address_control_tb.v
 F../rtl32/address_control_tb.v
 L0 4
@@ -43,19 +43,19 @@ R3
 r1
 !s85 0
 31
-!s108 1525186207.647923
+!s108 1525563643.207365
 !s107 ../rtl32/address_control_tb.v|
 !s90 ../rtl32/address_control_tb.v|
 !i113 1
 R4
 vfft
-!s110 1525213075
+!s110 1525568593
 !i10b 1
-!s100 BL]bdVV4MSFoESRgHz^OG2
-Iz5cbT`o>i@ng08MMlH78l0
+!s100 01R`S807eUc20Y22KmU_33
+I?;oRo>0`h5hY5JfAfeX7L1
 R1
-Z6 d/user/spring18/zq2154/ELEN4823/4823_project/qsim_rtl
-w1525213067
+R2
+w1525568424
 8../rtl32/fft.v
 F../rtl32/fft.v
 L0 7
@@ -63,19 +63,19 @@ R3
 r1
 !s85 0
 31
-!s108 1525213075.049448
+!s108 1525568593.448764
 !s107 ../rtl32/fft.v|
 !s90 ../rtl32/fft.v|
 !i113 1
 R4
 vfft_stage_control
-!s110 1525200365
+!s110 1525564096
 !i10b 1
-!s100 ]ZQccK4aYRzFKQZ]XDkbT1
-Ii6Qc_5;eWG7BnJmY;7dN63
+!s100 E4jcQ>nOM_L@HnJJKDmAS0
+Ihofkg35C77Cj4>CVh3_j71
 R1
-R5
-w1525200297
+R2
+w1525564091
 8../rtl32/fft_stage_control.v
 F../rtl32/fft_stage_control.v
 L0 6
@@ -83,19 +83,19 @@ R3
 r1
 !s85 0
 31
-!s108 1525200365.898122
+!s108 1525564096.846019
 !s107 ../rtl32/fft_stage_control.v|
 !s90 ../rtl32/fft_stage_control.v|
 !i113 1
 R4
 vfft_stage_control_tb
-!s110 1525200368
+!s110 1525564095
 !i10b 1
-!s100 >8@;S1RiFlSFBki]Z1g@F1
-I[[F@07cFI_ffKbYRaOj<^0
+!s100 >:Be77Dn>N`JdQLbndlY82
+I@YQnlSicl]1XA;OPfUN<I2
 R1
-R5
-w1525200349
+R2
+w1525563952
 8../rtl32/fft_stage_control_tb.v
 F../rtl32/fft_stage_control_tb.v
 L0 4
@@ -103,19 +103,19 @@ R3
 r1
 !s85 0
 31
-!s108 1525200368.130751
+!s108 1525564095.367139
 !s107 ../rtl32/fft_stage_control_tb.v|
 !s90 ../rtl32/fft_stage_control_tb.v|
 !i113 1
 R4
 vfft_tb
-!s110 1525213072
+!s110 1525568592
 !i10b 1
-!s100 <m]gEC8`=hZlZTjZj8<SJ3
-I9O`cTTcfRmV84bcQ6iQR<1
+!s100 LM[[J6=Yh_KJ<N3Waa5c62
+I6A6?TYLN]e;3mAgmHS]kV2
 R1
-R6
-w1525213021
+R2
+w1525568584
 8../rtl32/fft_tb.v
 F../rtl32/fft_tb.v
 L0 9
@@ -123,19 +123,19 @@ R3
 r1
 !s85 0
 31
-!s108 1525213072.203794
+!s108 1525568591.846799
 !s107 ../rtl32/fft_tb.v|
 !s90 ../rtl32/fft_tb.v|
 !i113 1
 R4
 vmux_control
-!s110 1525203485
+!s110 1525566189
 !i10b 1
-!s100 HXa7=LN=82VLR:iN8YN8K1
-IOmWm;jMgFH4aoT=Vg2OB30
+!s100 jJmV6;aNCkTA6[VGjPh>O3
+IUUjeTbHJeIHYgK1l6C]zX3
 R1
-R5
-w1525203317
+R2
+w1525566178
 8../rtl32/mux_control.v
 F../rtl32/mux_control.v
 L0 1
@@ -143,7 +143,7 @@ R3
 r1
 !s85 0
 31
-!s108 1525203485.917620
+!s108 1525566189.048518
 !s107 ../rtl32/mux_control.v|
 !s90 ../rtl32/mux_control.v|
 !i113 1
@@ -154,7 +154,7 @@ vmux_control_tb
 !s100 iEJXbQ7^2G^;[O]HBE`>F3
 I`5TWCoVK^ZzR^BSkzPRnO3
 R1
-R5
+R2
 w1525200155
 8../rtl32/mux_control_tb.v
 F../rtl32/mux_control_tb.v
@@ -169,41 +169,41 @@ r1
 !i113 1
 R4
 vpe
-!s110 1524602271
+!s110 1525556333
 !i10b 1
-!s100 BBHD3PzPKk_fb61`:hzGN2
-IE7V=WA1=g2RLoOUglfK0n0
+!s100 aOY0=XzJ=VYL]9Nl9?P;j3
+IHd<a4PKIQ6O5RMn^d8PFJ3
 R1
-R0
-w1524457514
-8rtl32/pe.v
-Frtl32/pe.v
+R2
+w1525554869
+8../rtl32/pe.v
+F../rtl32/pe.v
 L0 1
 R3
 r1
 !s85 0
 31
-!s108 1524602271.082791
-!s107 rtl32/pe.v|
-!s90 rtl32/pe.v|
+!s108 1525556333.436342
+!s107 ../rtl32/pe.v|
+!s90 ../rtl32/pe.v|
 !i113 1
 R4
 vpe_tb
-!s110 1525184940
+!s110 1525556334
 !i10b 1
-!s100 Qoc050;7>j]7G1i[80Jzm2
-IYeSMha3ClaJ=JMaXUY2<=2
+!s100 gBMX_XoVgiZ@<Xe9HO_d[3
+IV@znOBmWWgE84N:AndDSM3
 R1
-R5
-w1525184934
+R2
+w1525556328
 8../rtl32/pe_tb.v
 F../rtl32/pe_tb.v
-L0 3
+L0 4
 R3
 r1
 !s85 0
 31
-!s108 1525184940.274429
+!s108 1525556334.576262
 !s107 ../rtl32/pe_tb.v|
 !s90 ../rtl32/pe_tb.v|
 !i113 1
@@ -218,7 +218,7 @@ R0
 w1524601013
 8rtl32/qadd.v
 Frtl32/qadd.v
-Z7 L0 21
+Z5 L0 21
 R3
 r1
 !s85 0
@@ -238,7 +238,7 @@ R0
 w1524601017
 8rtl32/qmult.v
 Frtl32/qmult.v
-R7
+R5
 R3
 r1
 !s85 0
@@ -258,7 +258,7 @@ R0
 w1524601020
 8rtl32/qmults.v
 Frtl32/qmults.v
-R7
+R5
 R3
 r1
 !s85 0
@@ -269,13 +269,13 @@ r1
 !i113 1
 R4
 vram
-!s110 1525212156
+!s110 1525566471
 !i10b 1
-!s100 C@U6Pj328CK?mS@TPo<jD1
-IE8a4<kHj@BNd2J2n8BGJh3
+!s100 Xki1C8EhJ>J`]<QMD6S:52
+IhBNXLf>Tmj[Lzhk0?zTbI3
 R1
-R5
-w1525212153
+R2
+w1525565644
 8../rtl32/ram.v
 F../rtl32/ram.v
 L0 1
@@ -283,7 +283,7 @@ R3
 r1
 !s85 0
 31
-!s108 1525212156.140298
+!s108 1525566471.597385
 !s107 ../rtl32/ram.v|
 !s90 ../rtl32/ram.v|
 !i113 1
@@ -294,7 +294,7 @@ vram_tb
 !s100 5<j8d[Fok]]a>eQz6ki_J1
 I<:bJVck4GH;BL0b?6DZX41
 R1
-R5
+R2
 w1525210010
 8../rtl32/ram_tb.v
 F../rtl32/ram_tb.v
@@ -309,13 +309,13 @@ r1
 !i113 1
 R4
 vread_input
-!s110 1524671927
+!s110 1525562032
 !i10b 1
-!s100 PN_lK5F1ac?fLgi[JY7mW3
-Ij1bg[XmnK4SO]VgXzbk5`2
+!s100 eT6348ZKNJmc@?0k[4G<Q3
+I:VDjHZz@QeK>`kO6D6aHc1
 R1
-R5
-w1524671925
+R2
+w1525562029
 8../rtl32/read_input.v
 F../rtl32/read_input.v
 L0 12
@@ -323,7 +323,7 @@ R3
 r1
 !s85 0
 31
-!s108 1524671927.474430
+!s108 1525562032.098479
 !s107 ../rtl32/read_input.v|
 !s90 ../rtl32/read_input.v|
 !i113 1
@@ -334,7 +334,7 @@ vrom
 !s100 E9U=>54PKFM>=?E442=@L0
 I[JAV?n4FhoCGmdlWD=1=G0
 R1
-R5
+R2
 w1525151738
 8../rtl32/rom.v
 F../rtl32/rom.v
@@ -354,7 +354,7 @@ vtwiddle
 !s100 V?`J>BcJGHmIomMmFA`JP3
 I9f@VzoX3ko9na=6_=OLkI0
 R1
-R2
+d/user/spring18/zq2154/ELEN4823/4823_project
 w1525152059
 8rtl32/twiddle.v
 Frtl32/twiddle.v

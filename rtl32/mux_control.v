@@ -33,8 +33,9 @@ begin
 	if(ld_data)
 		m0_s <= 1'b0;
 	else 
+	begin
 		m0_s <= 1'b1;
-	m3_s <= 1'b0;
+		m3_s <= 1'b0;
 	case(stage_num)
 		STAGE0 : begin
 			m1_s <= 2'b10;
@@ -89,6 +90,7 @@ begin
 			m3_s <= 1'bz;
 		end
 	endcase
+	end
 end
 
 endmodule

@@ -138,6 +138,17 @@ wire m0_s;
 wire [1:0] m1_s;
 wire m2_s;
 wire m3_s;
+wire [ADDRSIZE-1:0] r_addr_0_1, w_addr_0_1;
+wire [ADDRSIZE-1:0] r_addr_2_3, w_addr_2_3;
+
+assign rd_addr0 = r_addr_0_1;
+assign rd_addr1 = r_addr_0_1;
+assign rd_addr2 = r_addr_2_3;
+assign rd_addr3 = r_addr_2_3;
+assign wr_addr0 = w_addr_0_1;
+assign wr_addr1 = w_addr_0_1;
+assign wr_addr2 = w_addr_2_3;
+assign wr_addr3 = w_addr_2_3;
 
 fft_stage_control #(.NUMSTAGES(NUMSTAGES)) control0(
 	clk,
@@ -145,17 +156,17 @@ fft_stage_control #(.NUMSTAGES(NUMSTAGES)) control0(
 	en_stage,
 	stage_num,
 	m0_s, m1_s,	m2_s, m3_s,
-	rd_addr0, rd_addr1, rd_addr2, rd_addr3,
-	wr_addr0, wr_addr1, wr_addr2, wr_addr3,
+	r_addr_0_1, w_addr_0_1,
+	r_addr_2_3, w_addr_2_3,
 	stage_done
 );
 	
 
 //---------------- first MUX stage ---------------------
-assign bank0_in = m0_s ? data_in0 : m21_out;
-assign bank1_in = m0_s ? data_in1 : m22_out;
-assign bank2_in = m0_s ? data_in2 : m23_out;
-assign bank3_in = m0_s ? data_in3 : m24_out;
+assign bank0_in = ~m0_s ? data_in0 : m21_out;
+assign bank1_in = ~m0_s ? data_in1 : m22_out;
+assign bank2_in = ~m0_s ? data_in2 : m23_out;
+assign bank3_in = ~m0_s ? data_in3 : m24_out;
 
 
 //---------------- second MUX stage ---------------------
@@ -259,6 +270,12 @@ begin
 		IDLE : begin
 			done_r <= 1'b0;
 		end
+		LDRAM : begin
+			en_stage <= 1'b1;
+		end
+		RAMRDY : begin
+			en_stage <= 1'b0;
+		end
 		STAGE0, STAGE1, STAGE2, STAGE3, STAGE4 : begin
 			if(stage_done && en_stage)
 				en_stage <= 1'b0;
@@ -307,6 +324,12 @@ begin
 				wr_addr3_r <= init_addr;
 			end
 			init_addr = init_addr + 1;
+		end
+		DONE : begin
+			wr_en0 <= 1'b0;
+			wr_en1 <= 1'b0;
+			wr_en2 <= 1'b0;
+			wr_en3 <= 1'b0;
 		end
 		OUTPUT : begin
 			wr_en0 <= 1'b0;

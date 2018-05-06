@@ -12,14 +12,10 @@ module fft_stage_control(
 	m1_s,		// mux 1 select
 	m2_s,		// mux 2 select
 	m3_s,		// mux 3 select
-	rd_addr0,	// 0: read address
-	rd_addr1,	// 1: read address
-	rd_addr2,	// 2: read address
-	rd_addr3,	// 3: read address
-	wr_addr0,	// 0: write address
-	wr_addr1,	// 1: write address
-	wr_addr2,	// 2: write address
-	wr_addr3,	// 3: write address
+	r_addr_0_1,	// 0,1: read address
+	w_addr_0_1,	// 0,1: write address
+	r_addr_2_3,	// 2,3: read address
+	w_addr_2_3,	// 2,3: write address
 	stage_done	// stage completed
 );
 
@@ -31,8 +27,8 @@ parameter NUMSTAGES = 5;
 //---------------- define inputs and outputs ---------------------
 input clk, ld_data, en, stage_num;
 output m0_s, m1_s, m2_s, m3_s;
-output rd_addr0, rd_addr1, rd_addr2, rd_addr3;
-output wr_addr0, wr_addr1, wr_addr2, wr_addr3;
+output r_addr_0_1, w_addr_0_1;
+output r_addr_2_3, w_addr_2_3;
 output stage_done;
 
 
@@ -45,8 +41,8 @@ wire m0_s;
 wire [1:0] m1_s;
 wire m2_s;
 wire m3_s;
-wire [NUMSTAGES-3:0] rd_addr0, rd_addr1, rd_addr2, rd_addr3;
-wire [NUMSTAGES-3:0] wr_addr0, wr_addr1, wr_addr2, wr_addr3;
+wire [NUMSTAGES-3:0] r_addr_0_1, w_addr_0_1;
+wire [NUMSTAGES-3:0] r_addr_2_3, w_addr_2_3;
 reg stage_done;
 
 
@@ -56,8 +52,8 @@ wire m0_s_o;
 wire [1:0] m1_s_o;
 wire m2_s_o;
 wire m3_s_o;
-wire [NUMSTAGES-3:0] rd_addr0_o, rd_addr1_o, rd_addr2_o, rd_addr3_o;
-wire [NUMSTAGES-3:0] wr_addr0_o, wr_addr1_o, wr_addr2_o, wr_addr3_o;
+wire [NUMSTAGES-3:0] r_addr_0_1_o, w_addr_0_1_o;
+wire [NUMSTAGES-3:0] r_addr_2_3_o, w_addr_2_3_o;
 
 
 //---------------- tristate buffer ---------------------
@@ -66,21 +62,17 @@ assign m1_s = en ? m1_s_o : 2'bzz;
 assign m2_s = en ? m2_s_o : 1'bz;
 assign m3_s = en ? m3_s_o : 1'bz;
 
-assign rd_addr0 = en ? rd_addr0_o : {NUMSTAGES-2{1'bz}};
-assign rd_addr1 = en ? rd_addr1_o : {NUMSTAGES-2{1'bz}};
-assign rd_addr2 = en ? rd_addr2_o : {NUMSTAGES-2{1'bz}};
-assign rd_addr3 = en ? rd_addr3_o : {NUMSTAGES-2{1'bz}};
-assign wr_addr0 = en ? wr_addr0_o : {NUMSTAGES-2{1'bz}};
-assign wr_addr1 = en ? wr_addr1_o : {NUMSTAGES-2{1'bz}};
-assign wr_addr2 = en ? wr_addr2_o : {NUMSTAGES-2{1'bz}};
-assign wr_addr3 = en ? wr_addr3_o : {NUMSTAGES-2{1'bz}};
+assign r_addr_0_1 = en ? r_addr_0_1_o : {NUMSTAGES-2{1'bz}};
+assign w_addr_0_1 = en ? w_addr_0_1_o : {NUMSTAGES-2{1'bz}};
+assign r_addr_2_3 = en ? r_addr_2_3_o : {NUMSTAGES-2{1'bz}};
+assign w_addr_2_3 = en ? w_addr_2_3_o : {NUMSTAGES-2{1'bz}};
 
 
 //---------------- address generator ---------------------
 address_control #(.NUMSTAGES(NUMSTAGES)) acontrol0(
 	counter_r, stage_num, 
-	rd_addr0_o, rd_addr1_o, rd_addr2_o, rd_addr3_o,	
-	wr_addr0_o, wr_addr1_o, wr_addr2_o, wr_addr3_o
+	r_addr_0_1_o, w_addr_0_1_o,
+	r_addr_2_3_o, w_addr_2_3_o
 );
 
 
@@ -100,7 +92,7 @@ always @(posedge clk)
 begin
 	if(en) begin
 		counter_r <= counter_r + 1;
-		if(counter_r == 3'b111)
+		if(counter_r == 3'b110)//3'b111)
 			stage_done <= 1'b1;
 	end
 	else begin 

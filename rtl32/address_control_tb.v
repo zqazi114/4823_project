@@ -12,8 +12,8 @@ parameter WL=16, IWL=5, FWL=10;
 // -------------------- create inputs and oututs -----------------------
 reg [NUMSTAGES-3:0] counter_r;
 reg [2:0] stage_num_r;
-wire [NUMSTAGES-3:0] rd_addr0, rd_addr1, rd_addr2, rd_addr3;
-wire [NUMSTAGES-3:0] wr_addr0, wr_addr1, wr_addr2, wr_addr3;
+wire [NUMSTAGES-3:0] r_addr_0_1, w_addr_0_1;
+wire [NUMSTAGES-3:0] r_addr_2_3, w_addr_2_3;
 
 // -------------------- testbench variables -----------------------
 reg clk;
@@ -22,8 +22,8 @@ reg clk;
 address_control #(.NUMSTAGES(NUMSTAGES)) a0(
 	counter_r,
 	stage_num_r,
-	rd_addr0, rd_addr1, rd_addr2, rd_addr3,
-	wr_addr0, wr_addr1, wr_addr2, wr_addr3
+	r_addr_0_1, w_addr_0_1,
+	r_addr_2_3, w_addr_2_3
 );
 
 // -------------------- initialize -----------------------

@@ -42,17 +42,23 @@ wire [4:0] next_state;
 wire [WORDSIZE-1:0] fft_in0, fft_in1, fft_in2, fft_in3;				// input to fft wires
 wire [WORDSIZE-1:0] fft_out0, fft_out1, fft_out2, fft_out3;			// output from fft wire
 
-
+wire [WORDSIZE-1:0] data_in0, data_in1, data_in2, data_in3;				// input to fft wires
 
 //---------------- RAM initializer ---------------------
 read_input #(.WORDSIZE(WORDSIZE), .NUMSAMPLES(32)) r0(
 	clk, 
 	ld_data_r, init_error, 
-	fft_in0, fft_in1, fft_in2, fft_in3, 
+	data_in0, data_in1, data_in2, data_in3, 
 	ld_done
 );
 
 //---------------- FFT module ---------------------
+
+assign fft_in0 = ld_data_r ? data_in0 : {WORDSIZE{1'bz}};
+assign fft_in1 = ld_data_r ? data_in1 : {WORDSIZE{1'bz}};
+assign fft_in2 = ld_data_r ? data_in2 : {WORDSIZE{1'bz}};
+assign fft_in3 = ld_data_r ? data_in3 : {WORDSIZE{1'bz}};
+
 fft #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) fft0(
 	clk, en_r, 
 	ld_data_r, ld_done, 
@@ -117,16 +123,21 @@ begin
 	state <= next_state;
 	case(state)
 		IDLE 	: ld_data_r <= 1'b1; 
-		LDRAM 	: ;
-		RAMRDY  : en_r <= 1'b1;
-		RUNNING : en_r <= 1'b1;
+		LDRAM 	: output_data_r <= 1'b1;
+		RAMRDY  : begin 
+			ld_data_r <= 1'b0;
+			en_r <= 1'b1;
+			output_data_r <= 1'b0;
+		end
+		RUNNING : begin 
+			ld_data_r <= 1'b0;// Stop loading data when running, to be removed in pipeline
+			en_r <= 1'b1;
+		end
 		DONE	: begin 
 			en_r <= 1'b0;
-			ld_data_r <= #5 1'b0;
+			ld_data_r <= 1'b0;
 		end
 		OUTPUT  : begin
-			 output_data_r <= 1'b1;
-			 output_data_r <= #5 1'b1;
 			 output_data_r <= 1'b1;
 		end
 	endcase

@@ -105,12 +105,12 @@ begin
 			done <= 1'b0;
 		end
 		LOADING : begin
-			if(i < NUMSAMPLES) begin
+			if(i < NUMSAMPLES/4) begin
 				data_out0 <= samples[i];
-				data_out1 <= samples[i+1];
-				data_out2 <= samples[i+2];
-				data_out3 <= samples[i+3];
-				i = i + 4;			
+				data_out1 <= samples[i+8];
+				data_out2 <= samples[i+16];
+				data_out3 <= samples[i+24];
+				i = i + 1;			
 			end	else begin
 				done <= 1'b1;
 			end

@@ -1,4 +1,4 @@
-vsim work.fft_stage
+vsim work.fft
 
 delete wave *
 add wave clk
