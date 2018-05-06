@@ -8,61 +8,9 @@
 # //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
 # //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
 # //
-vsim work.fft
-# vsim 
-# Start time: 19:54:34 on May 05,2018
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft
-# Loading work.twiddle
-# Loading work.rom
-# Loading work.ram
-# Loading work.pe
-# Loading work.qadd
-# Loading work.qmult
-# Loading work.fft_stage_control
-# Loading work.address_control
-# Loading work.mux_control
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft:control0:mux_ctrl
-view wave
-# .main_pane.wave.interior.cs.body.pw.wf
-wave add *
-# No help for wave addcursor available.
-add wave *
-run 1ns
-force -freeze sim/:fft:clk 1 0, 0 {50000 ps} -r 100ns
-run
-run
-force -freeze sim/:fft:clk 1 0, 0 {50 ps} -r 100ns
-run
-run
-run
-run
-run
-force -freeze sim/:fft:clk 1 0, 0 {50 ps} -r 100ps
-run
-run
-run
-run
-run
-run
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft:control0:mux_ctrl
-force -freeze sim/:fft:clk 1 0, 0 {50 ps} -r 100ps
-run
-force -deposit sim/:ld_data 1 0
-run
 vsim work.fft_tb
 # vsim 
-# Start time: 20:01:45 on May 05,2018
+# Start time: 21:19:52 on May 05,2018
 # ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
 # Loading work.fft_tb
 # Loading work.read_input
@@ -81,168 +29,41 @@ vsim work.fft_tb
 # ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
 # ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
 #         Region: :fft_tb:fft0:control0:mux_ctrl
-view wave
-# .main_pane.wave.interior.cs.body.pw.wf
-run 10ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
 add wave *
-run 10ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft_tb
-# Loading work.fft
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 10ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft_tb
-# Loading work.fft
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 10ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft_tb
-# Loading work.fft
-# Loading work.ram
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 10ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft
-# Loading work.ram
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 10ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft_tb
-# Loading work.fft
-# Loading work.ram
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 10ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft_tb
-# Loading work.fft
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 10ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft_tb
-# Loading work.fft
-# Loading work.ram
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 10ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:control0:m0_s
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:control0:en
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:control0:ld_data
-run 10ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.mux_control
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 10ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft
-# Loading work.ram
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 10ns
-view wave
-# .main_pane.wave.interior.cs.body.pw.wf
+delete wave *
 add wave *
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 10ns
-run 10ns
+add wave -position insertpoint  \
+sim/:fft_tb:fft0:bank0_in
+add wave -position insertpoint  \
+sim/:fft_tb:fft0:bank0_out
+add wave -position insertpoint  \
+sim/:fft_tb:fft0:cs
+add wave -position insertpoint  \
+sim/:fft_tb:fft0:data_in0
 add wave -position insertpoint  \
 sim/:fft_tb:fft0:data_out0
 add wave -position insertpoint  \
-sim/:fft_tb:fft0:output_data
+sim/:fft_tb:fft0:m0_s
 add wave -position insertpoint  \
-sim/:fft_tb:fft0:bank0_out
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 20ns
-run 20ns
-# Causality operation skipped due to absence of debug database file
+sim/:fft_tb:fft0:m21_out
 add wave -position insertpoint  \
-sim/:fft_tb:fft0:out_addr
+sim/:fft_tb:fft0:pe_in0
 add wave -position insertpoint  \
-sim/:fft_tb:fft0:r_addr_0_1
-add wave -position insertpoint  \
-sim/:fft_tb:fft0:r_addr_2_3
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 30ns
+sim/:fft_tb:fft0:pe_out0
 add wave -position insertpoint  \
 sim/:fft_tb:fft0:rd_addr0_r
+add wave -position insertpoint  \
+sim/:fft_tb:fft0:state
+add wave -position insertpoint  \
+sim/:fft_tb:fft0:bank0_in
+add wave -position insertpoint  \
+sim/:fft_tb:fft0:bank0_out
+run 30ns
+# Causality operation skipped due to absence of debug database file
+add wave -position insertpoint  \
+sim/:fft_tb:fft0:wr_en
+add wave -position insertpoint  \
+sim/:fft_tb:fft0:rd_en
 restart -f
 # ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
 # ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
@@ -251,49 +72,10 @@ restart -f
 # ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
 #         Region: :fft_tb:fft0:control0:mux_ctrl
 run 30ns
+add wave -position insertpoint  \
+sim/:fft_tb:fft0:m1_s
 restart -f
 # ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft_tb
-# Loading work.fft
-# ** Warning: (vsim-PLI-3003) ../rtl32/fft_tb.v(122): [TOFD] - System task or function '$disp' is not defined.
-#         Region: :fft_tb
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 30ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft_tb
-# Loading work.fft
-# ** Warning: (vsim-PLI-3003) ../rtl32/fft_tb.v(118): [TOFD] - System task or function '$disp' is not defined.
-#         Region: :fft_tb
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 30ns
-# I'm here
-# I'm here
-# I'm here
-# I'm here
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft_tb
-# Loading work.fft
-# ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
-#         Region: :fft_tb:fft0:pe0
-# ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.
-# ** Warning: (vsim-3017) ../rtl32/fft_stage_control.v(80): [TFMPC] - Too few port connections. Expected 8, found 7.
-#         Region: :fft_tb:fft0:control0:mux_ctrl
-run 30ns
-run 30ns
-restart -f
-# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
-# Loading work.fft_tb
-# Loading work.fft
 # ** Warning: (vsim-3017) ../rtl32/fft.v(129): [TFMPC] - Too few port connections. Expected 10, found 9.
 #         Region: :fft_tb:fft0:pe0
 # ** Warning: (vsim-3722) ../rtl32/fft.v(129): [TFMPC] - Missing connection for port 'out3'.

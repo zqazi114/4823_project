@@ -108,21 +108,21 @@ wire [ADDRSIZE-1:0] rd_addr0, rd_addr1, rd_addr2, rd_addr3;
 wire [ADDRSIZE-1:0] wr_addr0, wr_addr1, wr_addr2, wr_addr3;
 reg [ADDRSIZE-1:0] rd_addr0_r, rd_addr1_r, rd_addr2_r, rd_addr3_r;
 reg [ADDRSIZE-1:0] wr_addr0_r, wr_addr1_r, wr_addr2_r, wr_addr3_r;
-reg rd_en0, rd_en1, rd_en2, rd_en3;
-reg wr_en0, wr_en1, wr_en2, wr_en3;
-reg cs0, cs1, cs2, cs3;
+reg rd_en;
+reg wr_en;
+reg cs;
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank0(
-	clk, rd_addr0_r, wr_addr0_r, rd_en0, wr_en0, cs0, bank0_in, bank0_out); 
+	clk, rd_addr0_r, wr_addr0_r, rd_en, wr_en, cs, bank0_in, bank0_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank1(
-	clk, rd_addr1_r, wr_addr1_r, rd_en1, wr_en1, cs1, bank1_in, bank1_out); 
+	clk, rd_addr1_r, wr_addr1_r, rd_en, wr_en, cs, bank1_in, bank1_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank2(
-	clk, rd_addr2_r, wr_addr2_r, rd_en2, wr_en2, cs2, bank2_in, bank2_out); 
+	clk, rd_addr2_r, wr_addr2_r, rd_en, wr_en, cs, bank2_in, bank2_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank3(
-	clk, rd_addr3_r, wr_addr3_r, rd_en3, wr_en3, cs3, bank3_in, bank3_out); 
+	clk, rd_addr3_r, wr_addr3_r, rd_en, wr_en, cs, bank3_in, bank3_out); 
 
 
 //---------------- PE ------------------------
@@ -201,14 +201,8 @@ assign m24_out = m2_s ? pe_out3 : pe_out1;
 initial
 begin
 	state 		<= IDLE;
-	rd_en0 		<= 0;
-	rd_en1 		<= 0;
-	rd_en2 		<= 0;
-	rd_en3 		<= 0;
-	wr_en0 		<= 0;
-	wr_en1 		<= 0;
-	wr_en2 		<= 0;
-	wr_en3 		<= 0;
+	rd_en 		<= 0;
+	wr_en 		<= 0;
 	done_r 		<= 0;
 	stage_num	<= 0;
 	en_stage 	<= 0;
@@ -278,7 +272,10 @@ begin
 		end
 		STAGE0, STAGE1, STAGE2, STAGE3, STAGE4 : begin
 			if(stage_done && en_stage)
+			begin
 				en_stage <= 1'b0;
+				wr_en <= 1'b0;
+			end
 			else if(~en_stage)
 				en_stage <= 1'b1;
 		end
@@ -295,18 +292,9 @@ integer init_addr;
 //---------------- RAM initialization logic ---------------------
 always @(posedge clk)
 begin
-	cs0    <= 1'b1;
-	cs1    <= 1'b1;
-	cs2    <= 1'b1;
-	cs3    <= 1'b1;
-	rd_en0 <= 1'b1;
-	rd_en1 <= 1'b1;
-	rd_en2 <= 1'b1;
-	rd_en3 <= 1'b1;	
-	wr_en0 <= 1'b1;
-	wr_en1 <= 1'b1;
-	wr_en2 <= 1'b1;
-	wr_en3 <= 1'b1;
+	cs    <= 1'b1;
+	rd_en <= 1'b1;
+	wr_en <= 1'b1;
 	
 	case(state)
 		IDLE : begin
@@ -326,16 +314,10 @@ begin
 			init_addr = init_addr + 1;
 		end
 		DONE : begin
-			wr_en0 <= 1'b0;
-			wr_en1 <= 1'b0;
-			wr_en2 <= 1'b0;
-			wr_en3 <= 1'b0;
+			wr_en <= 1'b0;
 		end
 		OUTPUT : begin
-			wr_en0 <= 1'b0;
-			wr_en1 <= 1'b0;
-			wr_en2 <= 1'b0;
-			wr_en3 <= 1'b0;
+			wr_en <= 1'b0;
 			rd_addr0_r <= out_addr;
 			rd_addr1_r <= out_addr;
 			rd_addr2_r <= out_addr;
