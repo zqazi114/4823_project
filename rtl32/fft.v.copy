@@ -106,43 +106,23 @@ assign data_out3 = output_data ? bank3_out : {WORDSIZE{1'bz}};
 //---------------- RAM modules ---------------------
 wire [ADDRSIZE-1:0] rd_addr0, rd_addr1, rd_addr2, rd_addr3;
 wire [ADDRSIZE-1:0] wr_addr0, wr_addr1, wr_addr2, wr_addr3;
-wire [ADDRSIZE-1:0] rd_addr0_r, rd_addr1_r, rd_addr2_r, rd_addr3_r;
-wire [ADDRSIZE-1:0] wr_addr0_r, wr_addr1_r, wr_addr2_r, wr_addr3_r;
+reg [ADDRSIZE-1:0] rd_addr0_r, rd_addr1_r, rd_addr2_r, rd_addr3_r;
+reg [ADDRSIZE-1:0] wr_addr0_r, wr_addr1_r, wr_addr2_r, wr_addr3_r;
 reg rd_en;
-reg wr_en, wr_en_r;
-wire wr_en_w;
+reg wr_en, wr_en_r, wr_en_r_r;
 reg cs;
 
-integer init_addr;
-integer out_addr;
-
-assign rd_addr0_r = (output_data && ld_data) ? init_addr :
-					(output_data) ? out_addr : rd_addr0;
-assign rd_addr1_r = (output_data && ld_data) ? init_addr :
-					(output_data) ? out_addr : rd_addr1;
-assign rd_addr2_r = (output_data && ld_data) ? init_addr :
-					(output_data) ? out_addr : rd_addr2;
-assign rd_addr3_r = (output_data && ld_data) ? init_addr :
-					(output_data) ? out_addr : rd_addr3;
-
-assign wr_addr0_r = (ld_data) ? init_addr : wr_addr0;
-assign wr_addr1_r = (ld_data) ? init_addr : wr_addr1;
-assign wr_addr2_r = (ld_data) ? init_addr : wr_addr2;
-assign wr_addr3_r = (ld_data) ? init_addr : wr_addr3;
-
-assign wr_en_w = (output_data && ld_data) ? wr_en : wr_en_r;
-
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank0(
-	clk, rd_addr0_r, wr_addr0_r, rd_en, wr_en_w, cs, bank0_in, bank0_out); 
+	clk, rd_addr0_r, wr_addr0_r, rd_en, wr_en_r_r, cs, bank0_in, bank0_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank1(
-	clk, rd_addr1_r, wr_addr1_r, rd_en, wr_en_w, cs, bank1_in, bank1_out); 
+	clk, rd_addr1_r, wr_addr1_r, rd_en, wr_en_r_r, cs, bank1_in, bank1_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank2(
-	clk, rd_addr2_r, wr_addr2_r, rd_en, wr_en_w, cs, bank2_in, bank2_out); 
+	clk, rd_addr2_r, wr_addr2_r, rd_en, wr_en_r_r, cs, bank2_in, bank2_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank3(
-	clk, rd_addr3_r, wr_addr3_r, rd_en, wr_en_w, cs, bank3_in, bank3_out); 
+	clk, rd_addr3_r, wr_addr3_r, rd_en, wr_en_r_r, cs, bank3_in, bank3_out); 
 
 
 //---------------- PE ------------------------
@@ -273,6 +253,8 @@ endfunction
 
 assign next_state = get_next_state(state, ld_data, ld_done, en, stage_done, output_data);
 
+integer out_addr;
+
 always @(posedge clk)
 begin
 	state <= next_state;
@@ -301,27 +283,46 @@ begin
 	endcase
 end
 
+integer init_addr;
+
 //---------------- RAM initialization logic ---------------------
 always @(posedge clk)
 begin
 	wr_en_r <= wr_en;
+	wr_en_r_r <= wr_en_r;
 	case(state)
 		IDLE : begin
-			init_addr = -1;
+			init_addr = 0;
 		end
 		LDRAM : begin
 			cs <= 1'b1;
 			rd_en <= 1'b1;
 			wr_en <= 1'b1;
-			if(init_addr < NUMSAMPLES/4 - 1)
+			if(init_addr < NUMSAMPLES/4) begin
+				rd_addr0_r <= init_addr;
+				rd_addr1_r <= init_addr;
+				rd_addr2_r <= init_addr;
+				rd_addr3_r <= init_addr;
+				wr_addr0_r <= init_addr;
+				wr_addr1_r <= init_addr;
+				wr_addr2_r <= init_addr;
+				wr_addr3_r <= init_addr;
 				init_addr = init_addr + 1;
-			else 
+			end else
 				wr_en <= 1'b0;
 		end
 		RAMRDY : begin
 			wr_en <= 1'b0;
 		end
 		STAGE0, STAGE1, STAGE2, STAGE3, STAGE4 : begin
+			rd_addr0_r <= rd_addr0;
+			rd_addr1_r <= rd_addr1;
+			rd_addr2_r <= rd_addr2;
+			rd_addr3_r <= rd_addr3;
+			wr_addr0_r <= wr_addr0;
+			wr_addr1_r <= wr_addr1;
+			wr_addr2_r <= wr_addr2;
+			wr_addr3_r <= wr_addr3;
 			if(stage_done && en_stage)
 				wr_en <= 1'b0;
 			else if (~en_stage)
@@ -334,12 +335,24 @@ begin
 		end
 		OUTPUT : begin
 			wr_en <= 1'b0;
+			rd_addr0_r <= out_addr;
+			rd_addr1_r <= out_addr;
+			rd_addr2_r <= out_addr;
+			rd_addr3_r <= out_addr;
 			if(out_addr < NUMSAMPLES/4) 
 				out_addr = out_addr + 1;
 			else 
 				done_r <= 1'b0;
 		end	
 		default : begin
+			rd_addr0_r <= rd_addr0;
+			rd_addr1_r <= rd_addr1;
+			rd_addr2_r <= rd_addr2;
+			rd_addr3_r <= rd_addr3;
+			wr_addr0_r <= wr_addr0;
+			wr_addr1_r <= wr_addr1;
+			wr_addr2_r <= wr_addr2;
+			wr_addr3_r <= wr_addr3;
 		end	
 	endcase
 end
