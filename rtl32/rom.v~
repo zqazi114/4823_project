@@ -16,7 +16,7 @@ reg [127:0] twiddle;  ///Actual text obtained from inputs.txt lines
 
 parameter WORDSIZE = 16; 	// word size 16-bits
 parameter ADDRSIZE = 5;		// number of bits in address
-parameter NUMADDR = 32;		// number of addresses
+parameter NUMADDR = 8;		// number of addresses
 
 input clk, cs, addr;
 output data1, data2;
@@ -26,14 +26,56 @@ wire cs;
 wire [ADDRSIZE-1:0] addr;
 wire [WORDSIZE-1:0] data1, data2;
 
-reg [WORDSIZE-1:0] memory [0:NUMADDR-1];
+reg [WORDSIZE-1:0] memory [0:NUMADDR/2-1];
 reg [WORDSIZE-1:0] data1_r, data2_r;
 
 integer i;
 
 assign data1 = cs ? data1_r : {WORDSIZE{1'bz}};
 assign data2 = cs ? data2_r : {WORDSIZE{1'bz}};
+/*
+initial 
+begin
 
+  // TEXT FILE inputs///////////////////////
+    tw_file = $fopen("twiddle.dat", "r"); //Opening text file (inputs)
+      if (tw_file == 0) begin               //If inputs file is not found
+        $display("data_file handle was NULL");
+        $finish;
+      end
+end
+
+always @(* )
+begin
+
+   if (!$feof(tw_file)) 
+   begin
+   ///!$feof means if not reaching the end of file
+   ///file_outputs is always returning a different number other than "0" if the doc 
+   ///has not ended. When reaching "0" it means the doc is over.
+   ///Since both of my docs are the same length I'm only validating one of them
+   ///but if you have different lenghts you should verify each doc you're reading
+	
+   scan_inputs = $fscanf(tw_file, "%h\n", twiddle);        //Inputs Line text
+	memory[i] = twiddle;
+	i = i+1;
+   $display ("Line :[inputs: %h _ outputs: %h ]", twiddle);  
+   // Displaying each line at the simulation monitor
+
+   ///$fscanf means formatted text, $scanf would read text ignoring the format
+   /// %h\n means it should expect HEX numbers and the end of line character, that means 
+   /// the line is over, but if you want to use a diff criteria 
+   /// you can replace \n to whatever you may need 
+
+   end
+   else
+   begin
+   $finish;
+   $fclose(twiddle);
+
+   end
+
+end*/
 
 initial
 begin
@@ -64,7 +106,7 @@ end
 always @(posedge clk)
 begin : READ
 	data1_r <= memory[addr];
-	data2_r <= memory[addr+NUMADDR/2];
+	data2_r <= memory[addr+NUMADDR/4];
 end
 
 endmodule

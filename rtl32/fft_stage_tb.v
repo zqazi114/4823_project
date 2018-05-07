@@ -14,6 +14,8 @@ module fft_stage_tb(
 parameter WORDSIZE = 16;
 parameter ADDRSIZE = 3;
 parameter NUMSTAGES = 5;
+parameter NUMSAMPLES = 32;
+parameter TOTALSAMPLES = 96;
 
 parameter [2:0] STAGE0  = 3'b000;
 parameter [2:0] STAGE1  = 3'b001;
@@ -26,35 +28,35 @@ parameter [2:0] STAGE7  = 3'b111;
 
 //---------------- states ---------------------
 parameter [2:0] IDLE 	= 3'b000;	
-parameter [2:0] LDRAM 	= 3'b001;
-parameter [2:0] RAMRDY 	= 3'b010;
-parameter [2:0] RUNNING	= 3'b011;
-parameter [2:0] DONE	= 3'b100;
-parameter [2:0] OUTPUT  = 3'b101;
+parameter [2:0] LOADING	= 3'b001;
+parameter [2:0] RUNNING	= 3'b010;
+parameter [2:0] DONE	= 3'b011;
 
 //---------------- define local variables ---------------------
 reg clk;
 reg en_r;
+reg wr_en0, wr_en1, wr_en2, wr_en3, wr_en4;
 wire init_error;
 reg ld_data_r;
 wire ld_done;
-reg output_data_r;
-wire done;
 
 
 //---------------- state registers ---------------------
-reg [4:0] state;
-wire [4:0] next_state;
+reg [2:0] state;
+wire [2:0] next_state;
 
 
 //---------------- datapath wires and regs ---------------------
-wire [WORDSIZE-1:0] fft_in0, fft_in1, fft_in2, fft_in3;				// input to fft wires
-wire [WORDSIZE-1:0] fft_out0, fft_out1, fft_out2, fft_out3;			// output from fft wire
-
-wire [WORDSIZE-1:0] data_in0, data_in1, data_in2, data_in3;				// input to fft wires
+wire [WORDSIZE-1:0] data_in0, data_in1, data_in2, data_in3;			// input to fft wires
+wire [WORDSIZE-1:0] st0_in0, st0_in1, st0_in2, st0_in3;				// input to stage 0
+wire [WORDSIZE-1:0] st1_in0, st1_in1, st1_in2, st1_in3;				// input to stage 1
+wire [WORDSIZE-1:0] st2_in0, st2_in1, st2_in2, st2_in3;				// input to stage 2
+wire [WORDSIZE-1:0] st3_in0, st3_in1, st3_in2, st3_in3;				// input to stage 3
+wire [WORDSIZE-1:0] st4_in0, st4_in1, st4_in2, st4_in3;				// input to stage 4
+wire [WORDSIZE-1:0] st4_out0, st4_out1, st4_out2, st4_out3;			// output from stage 4
 
 //---------------- RAM initializer ---------------------
-read_input #(.WORDSIZE(WORDSIZE), .NUMSAMPLES(32)) r0(
+read_input #(.WORDSIZE(WORDSIZE), .NUMSAMPLES(NUMSAMPLES), .TOTALSAMPLES(TOTALSAMPLES)) r0(
 	clk, 
 	ld_data_r, init_error, 
 	data_in0, data_in1, data_in2, data_in3, 
@@ -62,10 +64,10 @@ read_input #(.WORDSIZE(WORDSIZE), .NUMSAMPLES(32)) r0(
 );
 
 //---------------- FFT module ---------------------
-assign fft_in0 = ld_data_r ? data_in0 : {WORDSIZE{1'bz}};
-assign fft_in1 = ld_data_r ? data_in1 : {WORDSIZE{1'bz}};
-assign fft_in2 = ld_data_r ? data_in2 : {WORDSIZE{1'bz}};
-assign fft_in3 = ld_data_r ? data_in3 : {WORDSIZE{1'bz}};
+assign st0_in0 = ld_data_r ? data_in0 : {WORDSIZE{1'bz}};
+assign st0_in1 = ld_data_r ? data_in1 : {WORDSIZE{1'bz}};
+assign st0_in2 = ld_data_r ? data_in2 : {WORDSIZE{1'bz}};
+assign st0_in3 = ld_data_r ? data_in3 : {WORDSIZE{1'bz}};
 
 wire [2:0] nstage0 = STAGE0;
 wire [2:0] nstage1 = STAGE1;
@@ -76,57 +78,56 @@ wire [2:0] nstage4 = STAGE4;
 fft_stage #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) stage0(
 	clk, en_r, 
 	nstage0,
-	ld_data_r, ld_done, 
-	fft_in0, fft_in1, fft_in2, fft_in3, 
-	fft_out0, fft_out1, fft_out2, fft_out3, 
-	done
+	wr_en0,
+	st0_in0, st0_in1, st0_in2, st0_in3, 
+	st1_in0, st1_in1, st1_in2, st1_in3, 
 );
 
 fft_stage #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) stage1(
 	clk, en_r, 
 	nstage1,
-	ld_data_r, ld_done, 
-	fft_in0, fft_in1, fft_in2, fft_in3, 
-	fft_out0, fft_out1, fft_out2, fft_out3, 
-	done
+	wr_en1,
+	st1_in0, st1_in1, st1_in2, st1_in3, 
+	st2_in0, st2_in1, st2_in2, st2_in3, 
 );
 
 fft_stage #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) stage2(
 	clk, en_r, 
 	nstage2,
-	ld_data_r, ld_done, 
-	fft_in0, fft_in1, fft_in2, fft_in3, 
-	fft_out0, fft_out1, fft_out2, fft_out3, 
-	done
+	wr_en2,
+	st2_in0, st2_in1, st2_in2, st2_in3, 
+	st3_in0, st3_in1, st3_in2, st3_in3, 
 );
 
 fft_stage #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) stage3(
 	clk, en_r, 
 	nstage3,
-	ld_data_r, ld_done, 
-	fft_in0, fft_in1, fft_in2, fft_in3, 
-	fft_out0, fft_out1, fft_out2, fft_out3, 
-	done
+	wr_en3,
+	st3_in0, st3_in1, st3_in2, st3_in3, 
+	st4_in0, st4_in1, st4_in2, st4_in3, 
 );
 
 fft_stage #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) stage4(
 	clk, en_r, 
 	nstage4,
-	ld_data_r, ld_done, 
-	fft_in0, fft_in1, fft_in2, fft_in3, 
-	fft_out0, fft_out1, fft_out2, fft_out3, 
-	done
+	wr_en4,
+	st4_in0, st4_in1, st4_in2, st4_in3, 
+	st4_out0, st4_out1, st4_out2, st4_out3, 
 );
 
 
 //---------------- code begins here ---------------------
+
+integer i; 		// for wr_en
+
 initial
 begin
 	state <= IDLE;
 	clk <= 0;
 	ld_data_r <= 0;
 	en_r <= 0;
-	output_data_r <= 0;
+	wr_en0 <= 0;
+	i <= 0;
 end
 
 always @(*)
@@ -136,59 +137,54 @@ end
 
 
 //---------------- state logic ---------------------
-function [4:0] get_next_state;
-	input [4:0] state;
+function [2:0] get_next_state;
+	input [2:0] state;
 	input ld_data;
 	input ld_done;
 	input en;
-	input done;
-
+	
 	case (state)
 	 IDLE : 
 		if (ld_data)
-			get_next_state = LDRAM;
-	 LDRAM : 
-		if (ld_done)
-			get_next_state = RAMRDY;
-	 RAMRDY :
-		if (en)
+			get_next_state = RUNNING;
+	 LOADING : 
+		if (i > 8) 
 			get_next_state = RUNNING;
 	 RUNNING :
-		if (done) 
+		if (ld_done) 
 			get_next_state = DONE;
 	 DONE :
 		if (~ld_data)
-			get_next_state = OUTPUT;
-	 OUTPUT :
-		if (~done)
 			get_next_state = IDLE;
 	 default : get_next_state = IDLE;
 	endcase
 endfunction
 
-assign next_state = get_next_state(state, ld_data_r, ld_done, en_r, done);
+assign next_state = get_next_state(state, ld_data_r, ld_done, en_r);
 
 always @(posedge clk)
 begin
+	wr_en1 <= wr_en0;
+	wr_en2 <= wr_en1;
+	wr_en3 <= wr_en2;
+	wr_en4 <= wr_en3;
+	
 	state <= next_state;
 	case(state)
-		IDLE 	: ld_data_r <= 1'b1; 
-		LDRAM 	: output_data_r <= 1'b1;
-		RAMRDY  : begin 
-			ld_data_r <= 1'b0;
-			en_r <= 1'b1;
-			output_data_r <= 1'b0;
+		IDLE 	: begin 
+			ld_data_r <= 1'b1; 
+			wr_en0 <= 1'b1;
+		end
+		LOADING : begin
+			i <= i + 1;
 		end
 		RUNNING : begin 
-			ld_data_r <= 1'b0;// Stop loading data when running, to be removed in pipeline
+			wr_en0 <= 1'b1;
 			en_r <= 1'b1;
 		end
 		DONE	: begin 
+			wr_en0 <= 1'b0;
 			en_r <= 1'b0;
-			ld_data_r <= 1'b0;
-		end
-		OUTPUT  : begin
-			 output_data_r <= 1'b1;
 		end
 	endcase
 end

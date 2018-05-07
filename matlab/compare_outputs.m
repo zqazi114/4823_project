@@ -21,6 +21,6 @@ function [accuracy,in_add,samp,out_add,coeff] = compare_outputs(N, inputfile, ou
     
     ideal_coeff = fft(samp);
     
-    accuracy = sum( abs( (coeff-ideal_coeff) ./ ideal_coeff ) )/32;
+    accuracy = sum( abs( (coeff-ideal_coeff) ./ ideal_coeff ) )/N;
     
 end

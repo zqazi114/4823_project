@@ -3,7 +3,7 @@ clear;clc;
 % generate inputs
 inputfile = 'input.dat';
 outputfile = 'output.dat';
-N = 32;
+N = 96;
 samples = generate_inputs(N, inputfile);
 
 %compare outputs

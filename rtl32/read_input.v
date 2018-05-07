@@ -24,8 +24,9 @@ module read_input(
 
 
 // ----------------------------- parameters ------------------------------------
-parameter WORDSIZE = 16;	// number of bits per word
-parameter NUMSAMPLES = 32;	// number of samples being read
+parameter WORDSIZE = 16;		// number of bits per word
+parameter NUMSAMPLES = 32;		// number of samples being read
+parameter TOTALSAMPLES = 96; 	// number of samples in total to process
 
 
 // ---------------------- define inputs and outputs ------------------------------------
@@ -44,7 +45,7 @@ reg [WORDSIZE-1:0] data_out0, data_out1, data_out2, data_out3;
 // ------------------------- local variables ------------------------------------
 reg [WORDSIZE-1:0] samples [0:NUMSAMPLES-1]; // memory array to hold samples read from input.dat
 
-integer i; // used to index sample number
+integer i, j; // used to index sample number
 
 
 // ------------------------ state logic ------------------------------------
@@ -89,6 +90,7 @@ initial
 begin
 	state <= IDLE;
 	i = 0;
+	j = 0;
 	error <= 1'b0;
 	done <= 1'b0;
 	data_out0 <= {WORDSIZE{1'b0}};
@@ -105,15 +107,18 @@ begin
 			done <= 1'b0;
 		end
 		LOADING : begin
-			if(i < NUMSAMPLES/4) begin
+			if(j < TOTALSAMPLES/4 - 1) begin 	// check if all samples read
+				j <= j + 1;
+				if(i < NUMSAMPLES/4 - 1)		// read batch of 8 samples
+					i <= i + 1;			
+				else  
+					i <= 0;
 				data_out0 <= samples[i];
 				data_out1 <= samples[i+8];
 				data_out2 <= samples[i+16];
 				data_out3 <= samples[i+24];
-				i = i + 1;			
-			end	else begin
+			end else 
 				done <= 1'b1;
-			end
 		end
 		DONE : begin
 			i = 0;

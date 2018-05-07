@@ -205,10 +205,12 @@ begin
 	state <= next_state;
 	cs <= 1'b1;
 	rd_en <= 1'b1;
-	if(wr_en)
-		counter_r <= counter_r + 1;
-	else
-		counter_r <= 0;
+	case (state)
+		RUNNING : 
+			counter_r <= counter_r + 1
+		default:
+			counter_r <= 0;
+	endcase
 end
 
 endmodule

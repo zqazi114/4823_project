@@ -58,7 +58,22 @@ end
 always @(posedge clk)
 begin
 	cs_r <= 1'b1;
-	addr_r <= {ADDRSIZE{1'b1}};
+	case(stage_num)
+	STAGE0: addr_r = counter;
+    STAGE1: 
+        if(counter[2] == 0)
+            addr_r = counter[1:0] << 1;
+        else
+            addr_r = counter[1:0] << 2;
+    STAGE2:
+        if(counter[2:1] == 2'b0)
+            addr_r = counter[0] << 2;
+        else
+            addr_r = counter[0] << 3;
+    default:
+        addr_r = 0;
+    endcase
+
 end
 
 endmodule

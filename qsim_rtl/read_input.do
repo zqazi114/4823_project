@@ -5,6 +5,7 @@ add wave s
 add wave samples
 add wave done
 add wave -radix decimal sim/:read_input:i
+add wave -radix decimal sim/:read_input:j
 add wave -radix unsigned sim/:read_input:state
 add wave -radix unsigned sim/:read_input:next_state
 add wave -radix hexadecimal sim/:read_input:data_out0
@@ -27,9 +28,6 @@ run
 run
 run
 run
-force -deposit sim/:read_input:s 0 0
-run
-force -deposit sim/:read_input:s 1 0
 run
 run
 run
