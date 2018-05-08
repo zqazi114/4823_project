@@ -92,7 +92,7 @@ always @(posedge clk)
 begin
 	if(en) begin
 		counter_r <= counter_r + 1;
-		if(counter_r == 3'b110)//3'b111)
+		if(counter_r == 3'b11110)//3'b111)
 			stage_done <= 1'b1;
 	end
 	else begin 

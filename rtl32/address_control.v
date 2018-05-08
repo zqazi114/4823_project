@@ -16,7 +16,10 @@ parameter 	STAGE0 = 3'b000,
 		  	STAGE1 = 3'b001, 
 		  	STAGE2 = 3'b010, 
 			STAGE3 = 3'b011, 
-			STAGE4 = 3'b100; 
+			STAGE4 = 3'b100,
+			STAGE5 = 3'b101, 
+			STAGE6 = 3'b110, 
+			STAGE7 = 3'b111; 
 
 
 // ------------------------ define inputs and outputs ------------------------------
@@ -62,11 +65,23 @@ begin
 			w_addr_2_3_r <= { ~counter[NUMSTAGES-3], counter[NUMSTAGES-4:0] };
 		end
 		STAGE3 : begin
-			r_addr_2_3_r <= ~counter;//{ ~counter[NUMSTAGES-3:NUMSTAGES-5], counter[NUMSTAGES-6:0] };
+			r_addr_2_3_r <= { ~counter[NUMSTAGES-3:NUMSTAGES-5], counter[NUMSTAGES-6:0] };
 			w_addr_2_3_r <= { ~counter[NUMSTAGES-3:NUMSTAGES-4], counter[NUMSTAGES-5:0] };
 		end
 		STAGE4 : begin
-			r_addr_2_3_r <= {NUMSTAGES-2{1'b0}};//{ ~counter[NUMSTAGES-3], counter[NUMSTAGES-4:0] };
+			r_addr_2_3_r <= { ~counter[NUMSTAGES-3:NUMSTAGES-6], counter[NUMSTAGES-7:0] };
+			w_addr_2_3_r <= { ~counter[NUMSTAGES-3:NUMSTAGES-5], counter[NUMSTAGES-6:0] };
+		end
+		STAGE5 : begin
+			r_addr_2_3_r <= { ~counter[NUMSTAGES-3:NUMSTAGES-7], counter[NUMSTAGES-8:0] };
+			w_addr_2_3_r <= { ~counter[NUMSTAGES-3:NUMSTAGES-6], counter[NUMSTAGES-7:0] };
+		end
+		STAGE6 : begin
+			r_addr_2_3_r <= ~counter;
+			w_addr_2_3_r <= { ~counter[NUMSTAGES-3:NUMSTAGES-7], counter[NUMSTAGES-8:0] };
+		end
+		STAGE7 : begin
+			r_addr_2_3_r <= {NUMSTAGES-2{1'b0}};
 			w_addr_2_3_r <= ~counter;
 		end
 	endcase

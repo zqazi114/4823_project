@@ -12,7 +12,14 @@ module mux_control(
 parameter NUMSTAGES = 5;
 
 // --------------- states -----------------------
-parameter STAGE0 = 3'b000, STAGE1 = 3'b001, STAGE2 = 3'b010, STAGE3 = 3'b011, STAGE4 = 3'b100; 
+parameter	STAGE0 = 3'b000, 
+			STAGE1 = 3'b001, 
+			STAGE2 = 3'b010, 
+			STAGE3 = 3'b011, 
+			STAGE4 = 3'b100,
+			STAGE5 = 3'b101,
+			STAGE6 = 3'b110,
+			STAGE7 = 3'b111;
 
 // --------------- define inputs and outputs--------------------
 input ld_data, counter, stage_num;
@@ -79,6 +86,45 @@ begin
 			end
 		end
 		STAGE4 : begin
+			m3_s <= 1'b1;
+			if(counter[NUMSTAGES-3:NUMSTAGES-6]%2 == 1) begin
+				m1_s <= 2'b01;
+				m2_s <= 1'b0;
+			end else begin
+				m1_s <= 2'b10;
+				m2_s <= 1'b1;
+			end		
+			if(counter[NUMSTAGES-3:NUMSTAGES-6] == 0) begin
+				m1_s <= 2'b00;
+			end
+		end
+		STAGE5 : begin
+			m3_s <= 1'b1;
+			if(counter[NUMSTAGES-3:NUMSTAGES-7]%2 == 1) begin
+				m1_s <= 2'b01;
+				m2_s <= 1'b0;
+			end else begin
+				m1_s <= 2'b10;
+				m2_s <= 1'b1;
+			end		
+			if(counter[NUMSTAGES-3:NUMSTAGES-7] == 0) begin
+				m1_s <= 2'b00;
+			end
+		end
+		STAGE6 : begin
+			m3_s <= 1'b1;
+			if(counter[NUMSTAGES-3:NUMSTAGES-8]%2 == 1) begin
+				m1_s <= 2'b01;
+				m2_s <= 1'b0;
+			end else begin
+				m1_s <= 2'b10;
+				m2_s <= 1'b1;
+			end		
+			if(counter[NUMSTAGES-3:NUMSTAGES-8] == 0) begin
+				m1_s <= 2'b00;
+			end
+		end
+		STAGE7 : begin
 			m1_s <= 2'b00;
 			m2_s <= 1'b1;
 			m3_s <= 1'b1;
