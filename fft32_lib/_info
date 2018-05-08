@@ -9,7 +9,7 @@ z2
 cModel Technology
 Z0 d/homes/user/spring18/zq2154/ELEN4823/4823_project
 vaddress_control
-!s110 1525797159
+!s110 1525798683
 !i10b 1
 !s100 KWR>c7CfQDEdFYT=FXYFz0
 IPo[Jd<O>0C^EgUb_E:HVZ2
@@ -23,7 +23,7 @@ Z3 OL;L;10.3d;59
 r1
 !s85 0
 31
-!s108 1525797158.967543
+!s108 1525798683.784367
 !s107 ../rtl32/address_control.v|
 !s90 ../rtl32/address_control.v|
 !i113 1
@@ -68,14 +68,34 @@ r1
 !s90 ../rtl32/fft.v|
 !i113 1
 R4
-vfft_stage
-!s110 1525797167
+vfft_last_stage
+!s110 1525799222
 !i10b 1
-!s100 Oj_Pz<m?C9dYiQ51i2Ikk1
-IA;@VNbdPWCIazM<;SLB;n2
+!s100 @MBJcThfAom]GoDOY;6ob0
+InD4Gm<kjk4;h8o?d<08Y]0
 R1
 R2
-w1525796292
+w1525799208
+8../rtl32/stageN-1.v
+F../rtl32/stageN-1.v
+L0 8
+R3
+r1
+!s85 0
+31
+!s108 1525799222.043248
+!s107 ../rtl32/stageN-1.v|
+!s90 ../rtl32/stageN-1.v|
+!i113 1
+R4
+vfft_stage
+!s110 1525798667
+!i10b 1
+!s100 e4e04[cAQInC7Z5FJ?;c20
+IfI120lCBCQDlPckaME9DU0
+R1
+R2
+w1525798403
 8../rtl32/fft_stage.v
 F../rtl32/fft_stage.v
 L0 8
@@ -83,13 +103,13 @@ R3
 r1
 !s85 0
 31
-!s108 1525797167.750808
+!s108 1525798667.232368
 !s107 ../rtl32/fft_stage.v|
 !s90 ../rtl32/fft_stage.v|
 !i113 1
 R4
 vfft_stage_control
-!s110 1525797180
+!s110 1525798678
 !i10b 1
 !s100 3f`[o;l3hG?jSblGQW0?g1
 INHnloLWAmmOl9:BI5]S6<0
@@ -103,7 +123,7 @@ R3
 r1
 !s85 0
 31
-!s108 1525797180.719172
+!s108 1525798678.200340
 !s107 ../rtl32/fft_stage_control.v|
 !s90 ../rtl32/fft_stage_control.v|
 !i113 1
@@ -129,13 +149,13 @@ r1
 !i113 1
 R4
 vfft_stage_tb
-!s110 1525797165
+!s110 1525798992
 !i10b 1
-!s100 1oCb^:C`G:iCN;lfD[eF=0
-I>hiUhl7<AE>UC;omMIG@j1
+!s100 zRQnGzZ__S7C5Cz78g@XN3
+I>a=7Pb:BV2Z`8AEWac2j?1
 R1
 R2
-w1525795011
+w1525798982
 8../rtl32/fft_stage_tb.v
 F../rtl32/fft_stage_tb.v
 L0 9
@@ -143,7 +163,7 @@ R3
 r1
 !s85 0
 31
-!s108 1525797165.567977
+!s108 1525798992.043950
 !s107 ../rtl32/fft_stage_tb.v|
 !s90 ../rtl32/fft_stage_tb.v|
 !i113 1
@@ -169,13 +189,13 @@ r1
 !i113 1
 R4
 vmux_control
-!s110 1525797160
+!s110 1525798690
 !i10b 1
-!s100 cW;de>de4]Re49aWHLJ`]0
-I=88U[=J5?]1g2e=K=nB_]2
+!s100 W<00TcbG=io563o?WRM=E2
+IbHJ>2JHI<<hEY3mYPDk7j0
 R1
 R2
-w1525797147
+w1525798658
 8../rtl32/mux_control.v
 F../rtl32/mux_control.v
 L0 1
@@ -183,7 +203,7 @@ R3
 r1
 !s85 0
 31
-!s108 1525797160.039292
+!s108 1525798690.305859
 !s107 ../rtl32/mux_control.v|
 !s90 ../rtl32/mux_control.v|
 !i113 1

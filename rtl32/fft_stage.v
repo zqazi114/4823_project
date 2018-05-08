@@ -44,6 +44,7 @@ parameter [2:0] STAGE7  = 3'b111;
 parameter [2:0] IDLE 	= 3'b000;	
 parameter [2:0] RUNNING = 3'b001;
 parameter [2:0] DONE	= 3'b010;
+parameter [2:0] LOADING	= 3'b011;
 
 
 //---------------- define inputs and outputs ---------------------
@@ -86,21 +87,31 @@ twiddle #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES), .NUMST
 
 //---------------- RAM modules ---------------------
 wire [ADDRSIZE-1:0] rd_addr0, rd_addr1, rd_addr2, rd_addr3;
-wire [ADDRSIZE-1:0] wr_addr0, wr_addr1, wr_addr2, wr_addr3;
+reg [ADDRSIZE-1:0] wr_addr0, wr_addr1, wr_addr2, wr_addr3;
 reg cs;
 reg rd_en;
 
+reg ram_wr_en;
+always@(state or wr_en)
+begin
+	if(state==LOADING)
+		ram_wr_en = wr_en;
+	else
+		ram_wr_en = 0;
+
+end
+
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank0(
-	clk, rd_addr0, wr_addr0, rd_en, wr_en, cs, bank0_in, bank0_out); 
+	clk, rd_addr0, wr_addr0, rd_en, ram_wr_en, cs, bank0_in, bank0_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank1(
-	clk, rd_addr1, wr_addr1, rd_en, wr_en, cs, bank1_in, bank1_out); 
+	clk, rd_addr1, wr_addr1, rd_en, ram_wr_en, cs, bank1_in, bank1_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank2(
-	clk, rd_addr2, wr_addr2, rd_en, wr_en, cs, bank2_in, bank2_out); 
+	clk, rd_addr2, wr_addr2, rd_en, ram_wr_en, cs, bank2_in, bank2_out); 
 
 ram #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMADDR(NUMSAMPLES/4)) bank3(
-	clk, rd_addr3, wr_addr3, rd_en, wr_en, cs, bank3_in, bank3_out); 
+	clk, rd_addr3, wr_addr3, rd_en, ram_wr_en, cs, bank3_in, bank3_out); 
 
 
 //---------------- PE ------------------------
@@ -112,6 +123,7 @@ pe #(.WORDSIZE(WORDSIZE), .WL(16), .IWL(2), .FWL(13)) pe0(
 reg en_stage;
 wire stage_done;
 wire m0_s;
+reg ld_data;
 wire [1:0] m1_s;
 wire m2_s;
 wire m3_s;
@@ -122,14 +134,16 @@ assign rd_addr0 = r_addr_0_1;
 assign rd_addr1 = r_addr_0_1;
 assign rd_addr2 = r_addr_2_3;
 assign rd_addr3 = r_addr_2_3;
-assign wr_addr0 = w_addr_0_1;
-assign wr_addr1 = w_addr_0_1;
-assign wr_addr2 = w_addr_2_3;
-assign wr_addr3 = w_addr_2_3;
-
+always@(posedge clk)
+begin
+ wr_addr0 <= w_addr_0_1;
+ wr_addr1 <= w_addr_0_1;
+ wr_addr2 <= w_addr_2_3;
+ wr_addr3 <= w_addr_2_3;
+end
 fft_stage_control #(.NUMSTAGES(NUMSTAGES)) control0(
 	clk,
-	wr_en,
+	ld_data,
 	wr_en, //en_stage,
 	stage_num,
 	m0_s, m1_s,	m2_s, m3_s,
@@ -163,10 +177,10 @@ assign pe_in3 = (m1_s == 2'b00) ? bank3_out :
 				(m1_s == 2'b10) ? bank3_out : bank3_out;
 
 //---------------- third MUX stage ---------------------
-assign data_out0 = m2_s ? pe_out0 : pe_out2;
-assign data_out1 = m2_s ? pe_out1 : pe_out3;
-assign data_out2 = m2_s ? pe_out2 : pe_out0;
-assign data_out3 = m2_s ? pe_out3 : pe_out1;
+assign data_out0 = ~(state==RUNNING)?16'hzzzz:m2_s ? pe_out0 : pe_out2;
+assign data_out1 = ~(state==RUNNING)?16'hzzzz:m2_s ? pe_out1 : pe_out3;
+assign data_out2 = ~(state==RUNNING)?16'hzzzz:m2_s ? pe_out2 : pe_out0;
+assign data_out3 = ~(state==RUNNING)?16'hzzzz:m2_s ? pe_out3 : pe_out1;
 
 
 //---------------- code begins here ---------------------
@@ -174,31 +188,43 @@ initial
 begin
 	state <= IDLE;
 	rd_en <= 0;
+	ld_data <=0;
 	counter_r <= 0;
 end
-
+reg [5:0] i;
 //---------------- state logic ---------------------
 function [2:0] get_next_state;
 	input wr_en;
 	input [2:0] state;
 	input en;
 	input stage_done;
+	input [5:0] counter_r;
 
 	case (state)
 	 IDLE : 
 		if (wr_en)
+		begin
+			get_next_state = LOADING;
+			ld_data = 1;
+		end
+	 LOADING:
+		if(counter_r==0)
+		begin
 			get_next_state = RUNNING;
+			ld_data = 0;
+		end
 	 RUNNING :
 		if (~wr_en)
 			get_next_state = DONE;
+		else if(counter_r==0)
+			get_next_state = LOADING;
 	 DONE : 
 		if (~en)
 			get_next_state = IDLE;
 	 default : get_next_state = IDLE;
 	endcase
 endfunction
-
-assign next_state = get_next_state(wr_en, state, en, stage_done);
+assign next_state = get_next_state(wr_en, state, en, stage_done,counter_r);
 
 always @(posedge clk)
 begin

@@ -73,6 +73,7 @@ begin
 			end
 		end
 		STAGE3 : begin
+			m3_s <= 1'b1;
 			if(counter[NUMSTAGES-3:NUMSTAGES-5]%2 == 1) begin
 				m1_s <= 2'b01;
 				m2_s <= 1'b0;
@@ -85,6 +86,7 @@ begin
 			end
 		end
 		STAGE4 : begin
+			m3_s <= 1'b1;
 			if(counter[NUMSTAGES-3:NUMSTAGES-6]%2 == 1) begin
 				m1_s <= 2'b01;
 				m2_s <= 1'b0;
@@ -97,6 +99,7 @@ begin
 			end
 		end
 		STAGE5 : begin
+			m3_s <= 1'b1;
 			if(counter[NUMSTAGES-3:NUMSTAGES-7]%2 == 1) begin
 				m1_s <= 2'b01;
 				m2_s <= 1'b0;
