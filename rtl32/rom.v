@@ -15,8 +15,8 @@ reg [127:0] twiddle;  ///Actual text obtained from inputs.txt lines
 
 
 parameter WORDSIZE = 16; 	// word size 16-bits
-parameter ADDRSIZE = 5;		// number of bits in address
-parameter NUMADDR = 32;		// number of addresses
+parameter ADDRSIZE = 8;		// number of bits in address
+parameter NUMADDR = 256;	// number of addresses
 
 input clk, cs, addr;
 output data1, data2;
@@ -40,7 +40,7 @@ begin
 	data1_r <= 0;
 	data2_r <= 0;
 
-   $readmemh("twiddle32.dat", memory);
+   $readmemh("twiddle256.dat", memory);
 
 	
 //	memory[0]  <= 16'h0000; memory[1]  <= 16'h0000; memory[2]  <= 16'h0000; memory[3]  <= 16'h0000;

@@ -12,10 +12,10 @@ module fft_stage_tb(
 
 //---------------- parameters ---------------------
 parameter WORDSIZE = 16;
-parameter ADDRSIZE = 3;
-parameter NUMSTAGES = 5;
-parameter NUMSAMPLES = 32;
-parameter TOTALSAMPLES = 96;
+parameter ADDRSIZE = 5;
+parameter NUMSTAGES = 8;
+parameter NUMSAMPLES = 256;
+parameter TOTALSAMPLES = 10240;
 
 parameter [2:0] STAGE0  = 3'b000;
 parameter [2:0] STAGE1  = 3'b001;
@@ -35,7 +35,7 @@ parameter [2:0] DONE	= 3'b011;
 //---------------- define local variables ---------------------
 reg clk;
 reg en_r;
-reg wr_en0, wr_en1, wr_en2, wr_en3, wr_en4;
+reg wr_en0, wr_en1, wr_en2, wr_en3, wr_en4, wr_en5, wr_en6, wr_en7;
 wire init_error;
 reg ld_data_r;
 wire ld_done;
@@ -53,7 +53,10 @@ wire [WORDSIZE-1:0] st1_in0, st1_in1, st1_in2, st1_in3;				// input to stage 1
 wire [WORDSIZE-1:0] st2_in0, st2_in1, st2_in2, st2_in3;				// input to stage 2
 wire [WORDSIZE-1:0] st3_in0, st3_in1, st3_in2, st3_in3;				// input to stage 3
 wire [WORDSIZE-1:0] st4_in0, st4_in1, st4_in2, st4_in3;				// input to stage 4
-wire [WORDSIZE-1:0] st4_out0, st4_out1, st4_out2, st4_out3;			// output from stage 4
+wire [WORDSIZE-1:0] st5_in0, st5_in1, st5_in2, st5_in3;				// input to stage 4
+wire [WORDSIZE-1:0] st6_in0, st6_in1, st6_in2, st6_in3;				// input to stage 4
+wire [WORDSIZE-1:0] st7_in0, st7_in1, st7_in2, st7_in3;				// input to stage 4
+wire [WORDSIZE-1:0] st7_out0, st7_out1, st7_out2, st7_out3;			// output from stage 4
 
 //---------------- RAM initializer ---------------------
 read_input #(.WORDSIZE(WORDSIZE), .NUMSAMPLES(NUMSAMPLES), .TOTALSAMPLES(TOTALSAMPLES)) r0(
@@ -74,6 +77,9 @@ wire [2:0] nstage1 = STAGE1;
 wire [2:0] nstage2 = STAGE2;
 wire [2:0] nstage3 = STAGE3;
 wire [2:0] nstage4 = STAGE4;
+wire [2:0] nstage5 = STAGE5;
+wire [2:0] nstage6 = STAGE6;
+wire [2:0] nstage7 = STAGE7;
 
 fft_stage #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) stage0(
 	clk, en_r, 
@@ -109,10 +115,34 @@ fft_stage #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) sta
 
 fft_stage #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) stage4(
 	clk, en_r, 
-	nstage4,
-	wr_en4,
+	nstage3,
+	wr_en3,
 	st4_in0, st4_in1, st4_in2, st4_in3, 
-	st4_out0, st4_out1, st4_out2, st4_out3, 
+	st5_in0, st5_in1, st5_in2, st5_in3, 
+);
+
+fft_stage #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) stage5(
+	clk, en_r, 
+	nstage5,
+	wr_en5,
+	st5_in0, st5_in1, st5_in2, st5_in3, 
+	st6_in0, st6_in1, st6_in2, st6_in3, 
+);
+
+fft_stage #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) stage6(
+	clk, en_r, 
+	nstage6,
+	wr_en6,
+	st6_in0, st6_in1, st6_in2, st6_in3, 
+	st7_in0, st7_in1, st7_in2, st7_in3, 
+);
+
+fft_stage #(.WORDSIZE(WORDSIZE), .ADDRSIZE(ADDRSIZE), .NUMSTAGES(NUMSTAGES)) stage7(
+	clk, en_r, 
+	nstage7,
+	wr_en7,
+	st7_in0, st7_in1, st7_in2, st7_in3, 
+	st7_out0, st7_out1, st7_out2, st7_out3, 
 );
 
 
@@ -168,6 +198,9 @@ begin
 	wr_en2 <= wr_en1;
 	wr_en3 <= wr_en2;
 	wr_en4 <= wr_en3;
+	wr_en5 <= wr_en4;
+	wr_en6 <= wr_en5;
+	wr_en7 <= wr_en6;
 	
 	state <= next_state;
 	case(state)

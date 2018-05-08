@@ -11,7 +11,7 @@ module ram(
 
 parameter WORDSIZE = 16; 	// word size 16-bits
 parameter ADDRSIZE = 5;		// number of bits in address
-parameter NUMADDR = 8;	// number of addresses
+parameter NUMADDR = 32;		// number of addresses
 
 input clk, read_addr, write_addr, rd_en, wr_en, cs, data_in;
 output data_out;

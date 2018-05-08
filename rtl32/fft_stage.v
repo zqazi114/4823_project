@@ -26,9 +26,9 @@ module fft_stage(
 
 //---------------- parameters ---------------------
 parameter WORDSIZE = 16;
-parameter ADDRSIZE = 3;
-parameter NUMSTAGES = 5;
-parameter NUMSAMPLES = 32;
+parameter ADDRSIZE = 5;
+parameter NUMSTAGES = 8;
+parameter NUMSAMPLES = 256;
 
 parameter [2:0] STAGE0  = 3'b000;
 parameter [2:0] STAGE1  = 3'b001;

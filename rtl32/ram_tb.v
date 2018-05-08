@@ -4,8 +4,8 @@
 module ram_tb();
 
 // -------------------- define parameters -----------------------
-parameter NUMSTAGES = 5;
-parameter NUMSAMPLES = 32;
+parameter NUMSTAGES = 8;
+parameter NUMSAMPLES = 256;
 parameter WORDSIZE = 16;
 parameter WL=16, IWL=5, FWL=10;
 

@@ -11,8 +11,8 @@ module twiddle(
 // -------------------- parameters ------------------------
 parameter WORDSIZE = 16;
 parameter ADDRSIZE = 5;
-parameter NUMADDR = 32;
-parameter NUMSTAGES = 5;
+parameter NUMADDR = 256;
+parameter NUMSTAGES = 8;
 
 
 // -------------------- states ------------------------

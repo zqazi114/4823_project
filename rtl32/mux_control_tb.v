@@ -4,15 +4,15 @@
 module mux_control_tb();
 
 // -------------------- define parameters -----------------------
-parameter NUMSTAGES = 5;
-parameter NUMSAMPLES = 32;
+parameter NUMSTAGES = 8;
+parameter NUMSAMPLES = 256;
 parameter WORDSIZE = 16;
 parameter WL=16, IWL=5, FWL=10;
 
 // -------------------- create inputs and oututs -----------------------
 reg ld_data;
 reg [NUMSTAGES-3:0] counter_r;
-reg [2:0] stage_num_r;
+reg [3:0] stage_num_r;
 wire m0_s, m2_s, m3_s;
 wire [1:0] m1_s;
 
@@ -46,7 +46,7 @@ end
 always @(posedge clk)
 begin
 	ld_data <= #1 1'b1;
-	if(stage_num_r < 3'b101)
+	if(stage_num_r < 4'b1000)
 	begin
 		if(counter_r == {NUMSTAGES-2{1'b1}})
 		begin
